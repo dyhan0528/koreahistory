@@ -16,3 +16,5 @@ npm-debug.log*
 # 임시
 *.tmp
 *.bak
+
+flag-check.png

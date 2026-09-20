@@ -204,8 +204,11 @@ a{color:var(--cheong); text-decoration:none}
 
 /* ===== 홈 ===== */
 .hero{padding:2px 2px 4px}
-.hero .kicker{display:flex; align-items:center; gap:7px}
-.hero .flagdot{width:11px; height:11px; border-radius:50%; background:var(--hong); box-shadow:0 0 0 3px var(--hong-tint); flex:none}
+.hero .flagrow{display:flex; align-items:center; gap:12px}
+.hero .flag{width:76px; flex:none; border:1px solid var(--line-2); border-radius:3px; overflow:hidden; background:#fff}
+.hero .flag > svg{display:block; width:100%; height:auto}
+.hero .flagtx{display:grid; gap:2px; min-width:0}
+.hero .flagtx b{font-size:12.5px; font-weight:700; color:var(--ink-2)}
 .hero h1{font-size:clamp(24px,7vw,31px); margin-top:13px}
 .hero p{margin-top:10px; color:var(--ink-2); font-size:14px}
 .statrow{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:18px}
@@ -250,14 +253,10 @@ a{color:var(--cheong); text-decoration:none}
 .srow .rt .pg{font-family:var(--lat); font-size:11px; font-weight:600}
 .srow .rt svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2}
 
-/* ===== 답사지 상세 — 처마 단청 머리띠 ===== */
-.eave{position:relative; margin:-22px -16px 0; overflow:hidden}
-.eave svg{display:block; width:100%; height:auto}
-.eave .lbl{
-  position:absolute; left:16px; top:20px; display:flex; align-items:center; gap:7px;
-  color:var(--ink-2); font-size:12px; font-weight:700; letter-spacing:.01em;
-}
-.shd{padding:18px 2px 0}
+/* ===== 답사지 상세 — 색동 띠 ===== */
+.saekdong{display:flex; height:11px; margin:-22px -16px 0; overflow:hidden}
+.saekdong > i{flex:1 1 0}
+.shd{padding:22px 2px 0}
 .shd .top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 .shd .badge{font-family:var(--lat); font-size:11px; font-weight:700; letter-spacing:.06em; color:#fff; background:var(--hong); padding:4px 9px; border-radius:var(--r-s)}
 .shd.fin .badge{background:var(--nok)}
@@ -884,14 +883,16 @@ const REPO = "https://github.com/dyhan0528/koreahistory";
    괘는 위에서 아래로 세 획, 1=양(이어진 획) 0=음(끊긴 획).
    감(☵)은 본래 물이자 험난(險)을 뜻하므로 전쟁·투옥의 근대사 현장에 두었다. */
 const CATS = {
-  gung:{bars:[1,1,1], gwae:"건", ko:"궁궐·왕실", en:"Palaces", tone:["--hong","--cheong"]},
-  mus: {bars:[1,0,1], gwae:"리", ko:"박물관",     en:"Museums", tone:["--cheong","--hwang"]},
-  mod: {bars:[0,1,0], gwae:"감", ko:"근대사 현장", en:"Modern history", tone:["--ink-2","--hong"]},
-  vill:{bars:[0,0,0], gwae:"곤", ko:"서원·마을",  en:"Village and academy", tone:["--nok","--hwang"]}
+  gung:{bars:[1,1,1], gwae:"건", ko:"궁궐·왕실", en:"Palaces",             saek:["--hong","--hwang","--cheong","--nok"]},
+  mus: {bars:[1,0,1], gwae:"리", ko:"박물관",     en:"Museums",             saek:["--cheong","--hwang","--cheong","--ink-3"]},
+  mod: {bars:[0,1,0], gwae:"감", ko:"근대사 현장", en:"Modern history",      saek:["--ink-2","--hong","--ink-3","--hong"]},
+  vill:{bars:[0,0,0], gwae:"곤", ko:"서원·마을",  en:"Village and academy", saek:["--nok","--hwang","--nok","--cheong"]}
 };
 const CAT_ORDER = ["gung","mus","mod","vill"];
 
 const HISTORY = [
+  {v:"v1.2", d:"2026.09.20", ko:"처마 작도를 걷어내고 색동 띠만 남김. 첫 화면에 국기법 비례로 그린 태극기 삽입. 유형 라벨을 칩으로 옮겨 SVG 크기 규칙 충돌을 없앰",
+   en:"Eave drawing dropped, saekdong band kept. Taegeukgi drawn to legal proportions added to the first screen. Type label moved into a chip, removing an SVG sizing conflict"},
   {v:"v1.1", d:"2026.09.20", ko:"UX/UI 가이드북 적용 — 4괘 유형 분류, 처마 단청 머리띠, 지도 바텀 시트, 낙관 완료 스탬프, 단청 색동 게이지, 살창 구획선",
    en:"Design guide applied — four-trigram categories, eave-and-dancheong header, map bottom sheet, seal stamp on completion, dancheong gauge, lattice dividers"},
   {v:"v1.0", d:"2026.09.20", ko:"앱 UI 전면 개편 — 하단 4탭 구조, 태극·오방색 팔레트, 한 화면 스크롤 상세, 진도 링, PWA 구성",
@@ -1014,27 +1015,44 @@ function ring(done, total, size){
     </svg><span class="t">${Math.round(p*100)}<small style="font-size:.66em">%</small></span></div>`;
 }
 
-/* ---------------- 처마 단청 머리띠 ----------------
-   사진을 쓸 수 없으므로 막새기와 처마선과 단청 색동을 직접 그린다.
-   띠의 색 구성이 답사지 유형을 나타낸다 — 장식이 아니라 표시다. */
-function eaveSvg(s){
-  const c = catOf(s), [a, b] = c.tone.map(v => `var(${v})`);
-  const W = 400, H = 56, tiles = [];
-  for(let x = 0; x <= W; x += 20){
-    tiles.push(`<path d="M${x} ${H} a10 10 0 0 1 20 0z" fill="${(x/20) % 2 ? a : b}"></path>`);
-  }
-  return `<div class="eave"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
-      <rect width="${W}" height="${H}" fill="var(--card-2)"></rect>
-      <rect width="${W}" height="8" fill="${a}"></rect>
-      <rect y="8" width="${W}" height="2.5" fill="${b}"></rect>
-      <rect y="13" width="${W}" height="1.5" fill="${a}" opacity=".45"></rect>
-      <rect y="${H-13}" width="${W}" height="1.5" fill="${b}" opacity=".45"></rect>
-      ${tiles.join("")}
-    </svg>
-    <span class="lbl">${gwaeSvg(c.bars)}${esc(c.gwae)} · ${esc(P(c.ko, c.en))}</span>
-  </div>`;
+/* ---------------- 색동 띠 ----------------
+   답사지 상세 머리에 두는 색동 띠. 색 순서가 답사지 유형을 나타낸다. */
+function saekdongBand(s){
+  const cols = catOf(s).saek;
+  let out = "";
+  for(let i = 0; i < 16; i++) out += `<i style="background:var(${cols[i % cols.length]})"></i>`;
+  return `<div class="saekdong" aria-hidden="true">${out}</div>`;
 }
 
+/* ---------------- 태극기 ----------------
+   국기법 비례: 깃면 가로:세로 = 3:2, 태극 지름은 세로의 1/2,
+   괘 길이는 세로의 1/4, 괘 폭은 세로의 1/6, 음획은 3등분하여 가운데를 비운다.
+   4괘는 태극 중심에서 대각선상에 놓이고 획은 그 대각선과 직각을 이룬다.
+   위치는 건 좌상 · 감 우상 · 리 좌하 · 곤 우하. */
+function taegeukFlag(){
+  const LEN = 50, TH = 200/30, SEG = LEN/3;        // 괘 길이, 획 두께, 음획 한 토막
+  const bar = (yc, solid) => {
+    const y = (yc - TH/2).toFixed(3), h = TH.toFixed(3);
+    return solid
+      ? `<rect x="${-LEN/2}" y="${y}" width="${LEN}" height="${h}"></rect>`
+      : `<rect x="${-LEN/2}" y="${y}" width="${SEG.toFixed(3)}" height="${h}"></rect>`
+        + `<rect x="${(SEG/2).toFixed(3)}" y="${y}" width="${SEG.toFixed(3)}" height="${h}"></rect>`;
+  };
+  const gwae = (cx, cy, rot, bits) =>
+    `<g transform="translate(${cx} ${cy}) rotate(${rot})" fill="#14161B">`
+    + bits.map((b, i) => bar((i - 1) * TH * 2, b === 1)).join("") + `</g>`;
+  return `<svg viewBox="0 0 300 200" role="img" aria-label="태극기">
+    <rect width="300" height="200" fill="#FFFFFF"></rect>
+    <g transform="translate(150 100) rotate(33.69)">
+      <circle r="50" fill="#0B4DA2"></circle>
+      <path d="M -50,0 A 50,50 0 0 1 50,0 A 25,25 0 0 1 0,0 A 25,25 0 0 0 -50,0 Z" fill="#CD2E3A"></path>
+    </g>
+    ${gwae(56.81, 37.87, -56.31, [1,1,1])}
+    ${gwae(243.19, 37.87, 56.31, [0,1,0])}
+    ${gwae(56.81, 162.13, 56.31, [1,0,1])}
+    ${gwae(243.19, 162.13, -56.31, [0,0,0])}
+  </svg>`;
+}
 /* ---------------- 낙관 스탬프 + 소리 ---------------- */
 let actx = null;
 function pluck(){
@@ -1123,7 +1141,10 @@ function vMap(){
   const lg = [["var(--hong)", L("lgSite")], ["var(--nok)", L("lgDone")], ["var(--cheong)", L("lgRiver")], ["var(--line-2)", L("lgHill")]];
   const fl = [["all", L("fAll"), SITES.length, ""], ["todo", L("fTodo"), SITES.length - done, "g"], ["done", L("fDone"), done, "k"]];
   return `<section class="hero">
-      <div class="kicker"><i class="flagdot"></i><span class="cap">${esc(L("kicker"))}</span></div>
+      <div class="flagrow">
+        <span class="flag">${taegeukFlag()}</span>
+        <span class="flagtx"><b>${esc(P("대한민국","Republic of Korea"))}</b><span class="cap">${esc(L("kicker"))}</span></span>
+      </div>
       <h1>${esc(L("h1")).replace("\n","<br>")}</h1>
       <p>${esc(L("lede"))}</p>
     </section>
@@ -1164,9 +1185,10 @@ function vList(){
 function vSite(){
   const s = site(), c = catOf(s), fin = isFin(s);
   const gq = encodeURIComponent(s.ko + " " + s.addr);
-  return `${eaveSvg(s)}
+  return `${saekdongBand(s)}
     <section class="shd${fin ? " fin" : ""}">
       <div class="top"><span class="badge">${String(s.no).padStart(2,"0")}</span>
+        <span class="chip en" style="display:inline-flex; gap:5px">${gwaeSvg(c.bars)}${esc(c.gwae)} · ${esc(P(c.ko, c.en))}</span>
         <span class="chip ${fin ? "ok" : "ko"}">${chkDone(s)} / ${s.see.length} ${esc(P("체크","checked"))}</span>
       </div>
       <h1>${esc(P(s.ko, s.en))}</h1>
@@ -1292,7 +1314,7 @@ function vMe(){
         <span class="seal"><span>답사<br>완료</span></span>
         <span class="mark">DYHAN</span>
         <div class="role">${esc(L("maker"))}</div>
-        <div class="ver">${esc(T.appName.ko)} v1.1</div>
+        <div class="ver">${esc(T.appName.ko)} v1.2</div>
       </div>
     </div>
 
