@@ -32,32 +32,35 @@ img{max-width:100%}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&family=Archivo:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  /* 오방색 기반 · 태극 홍청 */
-  --hong:#CD2E3A;        /* 적 — 주 액션·선택 */
-  --hong-ink:#A4222C;
+  /* 1색 1역할 — 색이 곧 정보다 */
+  --hong:#CD2E3A;        /* 태극 양(陽) — 주 액션, 선택, 미방문 */
+  --hong-ink:#A3222C;    /* 낙관을 찍는 눌림 상태 */
   --hong-tint:#FCEBEC;
-  --cheong:#0B4DA2;      /* 청 — 영어·보조 */
+  --cheong:#0B4DA2;      /* 태극 음(陰) — 영어, 수계 */
   --cheong-tint:#E8EFF9;
-  --hwang:#B07716;       /* 황 — 추정 표시 */
+  --hwang:#B07716;       /* 오방 중앙 — 추정 */
   --hwang-tint:#FBF0DC;
-  --nok:#1F7A5A;         /* 녹 — 완료 */
+  --nok:#1F7A5A;         /* 오방 동방 — 완료 */
   --nok-tint:#E4F2EC;
 
-  --bg:#F3F4F6;
+  --bg:#F3F4F6;          /* 오방 서방 — 한지 바탕 */
   --card:#FFFFFF;
   --card-2:#F8F9FB;
-  --ink:#14161B;
+  --ink:#14161B;         /* 오방 북방 — 본문 */
   --ink-2:#585F6E;
   --ink-3:#8C93A3;
-  --line:#E5E8ED;
-  --line-2:#D3D8E0;
-  --bar:rgba(243,244,246,.82);
-  --sh-1:0 1px 2px rgba(20,22,27,.05);
-  --sh-2:0 2px 6px rgba(20,22,27,.06), 0 12px 28px -14px rgba(20,22,27,.18);
-  --sh-3:0 -1px 0 var(--line), 0 -12px 28px -20px rgba(20,22,27,.3);
+  --line:rgba(20,22,27,.09);
+  --line-2:rgba(20,22,27,.18);
+  --bar:rgba(243,244,246,.84);
+
+  /* 조선 목공예의 정갈한 선 — 과하게 둥글리지 않는다 */
+  --r-s:6px; --r-m:8px; --r-l:12px;
+  --sh-paper:0 4px 12px rgba(20,22,27,.05);
+  --sh-lift:0 6px 20px rgba(20,22,27,.09);
+  --sh-bar:0 -1px 0 var(--line), 0 -12px 28px -22px rgba(20,22,27,.28);
+
   --ui:"Gothic A1","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
   --lat:"Archivo",system-ui,sans-serif;
-  --r-s:10px; --r-m:14px; --r-l:20px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -67,11 +70,11 @@ img{max-width:100%}
     --nok:#4FC49B; --nok-tint:#123328;
     --bg:#0E1014; --card:#171A20; --card-2:#1D2128;
     --ink:#EDEFF4; --ink-2:#A3AAB9; --ink-3:#757C8B;
-    --line:#252A33; --line-2:#333A46;
-    --bar:rgba(14,16,20,.82);
-    --sh-1:0 1px 2px rgba(0,0,0,.4);
-    --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 30px -16px rgba(0,0,0,.7);
-    --sh-3:0 -1px 0 var(--line), 0 -14px 30px -22px rgba(0,0,0,.9);
+    --line:rgba(237,239,244,.10); --line-2:rgba(237,239,244,.20);
+    --bar:rgba(14,16,20,.84);
+    --sh-paper:0 2px 8px rgba(0,0,0,.4);
+    --sh-lift:0 8px 24px rgba(0,0,0,.6);
+    --sh-bar:0 -1px 0 var(--line), 0 -14px 30px -22px rgba(0,0,0,.9);
   }
 }
 :root[data-theme="dark"]{
@@ -81,34 +84,40 @@ img{max-width:100%}
   --nok:#4FC49B; --nok-tint:#123328;
   --bg:#0E1014; --card:#171A20; --card-2:#1D2128;
   --ink:#EDEFF4; --ink-2:#A3AAB9; --ink-3:#757C8B;
-  --line:#252A33; --line-2:#333A46;
-  --bar:rgba(14,16,20,.82);
-  --sh-1:0 1px 2px rgba(0,0,0,.4);
-  --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 30px -16px rgba(0,0,0,.7);
-  --sh-3:0 -1px 0 var(--line), 0 -14px 30px -22px rgba(0,0,0,.9);
+  --line:rgba(237,239,244,.10); --line-2:rgba(237,239,244,.20);
+  --bar:rgba(14,16,20,.84);
+  --sh-paper:0 2px 8px rgba(0,0,0,.4);
+  --sh-lift:0 8px 24px rgba(0,0,0,.6);
+  --sh-bar:0 -1px 0 var(--line), 0 -14px 30px -22px rgba(0,0,0,.9);
 }
 
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{
   margin:0; background:var(--bg); color:var(--ink);
-  font-family:var(--ui); font-size:15px; line-height:1.6; font-weight:400;
+  font-family:var(--ui); font-size:15px; line-height:1.62;
   -webkit-font-smoothing:antialiased;
 }
-h1,h2,h3{margin:0; font-weight:900; letter-spacing:-.02em; line-height:1.25; text-wrap:balance}
+h1,h2,h3{margin:0; font-weight:900; letter-spacing:-.02em; line-height:1.26; text-wrap:balance}
 p{margin:0}
 button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
 a{color:var(--cheong); text-decoration:none}
-:focus-visible{outline:2px solid var(--hong); outline-offset:2px; border-radius:6px}
+:focus-visible{outline:2px solid var(--hong); outline-offset:2px; border-radius:4px}
 .num{font-family:var(--lat); font-variant-numeric:tabular-nums}
 .cap{font-family:var(--lat); font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
 
-/* ===== shell ===== */
-.app{max-width:520px; margin:0 auto; min-height:100%; position:relative; background:var(--bg)}
-@media (min-width:640px){
-  body{background:var(--card-2)}
-  .app{box-shadow:0 0 0 1px var(--line); background:var(--bg)}
+/* ===== 살창(격자창) 구획선 — 회색 선 대신 창살 텍스처 ===== */
+.lattice{
+  height:9px; margin:0 2px;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-2) 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(0deg, var(--line-2) 0 1px, transparent 1px 11px);
+  background-position:0 0;
 }
+
+/* ===== 앱 셸 ===== */
+.app{max-width:520px; margin:0 auto; min-height:100%; position:relative; background:var(--bg)}
+@media (min-width:640px){ body{background:var(--card-2)} .app{box-shadow:0 0 0 1px var(--line); background:var(--bg)} }
 
 .appbar{
   position:sticky; top:env(safe-area-inset-top, 0px); z-index:30;
@@ -117,72 +126,90 @@ a{color:var(--cheong); text-decoration:none}
   display:flex; align-items:center; gap:10px; padding:10px 14px; min-height:54px;
 }
 .appbar .back{width:34px; height:34px; display:grid; place-items:center; margin-left:-6px; border-radius:50%}
-.appbar .back:active{background:var(--line)}
+.appbar .back:active{background:var(--line-2)}
 .appbar .ttl{font-weight:900; font-size:17px; letter-spacing:-.02em; margin-right:auto; display:flex; align-items:baseline; gap:7px; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .appbar .ttl small{font-family:var(--lat); font-weight:600; font-size:11px; color:var(--ink-3); letter-spacing:.02em}
 
-.langpill{display:flex; background:var(--card); border:1px solid var(--line-2); border-radius:999px; padding:2px; gap:2px; flex:none}
-.langpill button{
-  font-family:var(--lat); font-size:11.5px; font-weight:600; letter-spacing:.02em;
-  padding:5px 10px; border-radius:999px; color:var(--ink-2); white-space:nowrap;
-}
+.langpill{display:flex; background:var(--card); border:1px solid var(--line-2); border-radius:var(--r-m); padding:2px; gap:2px; flex:none}
+.langpill button{font-family:var(--lat); font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:var(--r-s); color:var(--ink-2); white-space:nowrap; transition:background .14s}
 .langpill button[aria-pressed="true"]{background:var(--hong); color:#fff}
 
-.view{padding:18px 16px 112px}
+.view{padding:22px 16px 118px}
 @media (prefers-reduced-motion: no-preference){
   .view{animation:rise .26s cubic-bezier(.22,.8,.3,1)}
   @keyframes rise{from{opacity:.4; transform:translateY(6px)} to{opacity:1; transform:none}}
 }
 
-/* ===== bottom tabs ===== */
+/* ===== 하단 탭 ===== */
 .tabbar{
   position:fixed; left:0; right:0; bottom:0; z-index:40;
-  background:var(--bar); backdrop-filter:blur(14px) saturate(1.6);
-  box-shadow:var(--sh-3);
+  background:var(--bar); backdrop-filter:blur(14px) saturate(1.6); box-shadow:var(--sh-bar);
   padding:6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
 }
 .tabbar-in{max-width:520px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr)}
 .tabbar button{display:grid; justify-items:center; gap:3px; padding:6px 0 4px; color:var(--ink-3)}
 .tabbar button svg{width:23px; height:23px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
-.tabbar button span{font-size:10.5px; font-weight:700; letter-spacing:-.01em}
+.tabbar button span{font-size:10.5px; font-weight:700}
 .tabbar button[aria-current="true"]{color:var(--hong)}
 .tabbar button[aria-current="true"] svg{stroke-width:2.1}
 
-/* ===== bits ===== */
-.card{background:var(--card); border-radius:var(--r-l); box-shadow:var(--sh-1)}
-.sect{margin-top:26px}
-.sect-hd{display:flex; align-items:center; gap:9px; margin-bottom:11px; padding:0 2px}
-.sect-hd h2{font-size:15.5px; font-weight:900}
+/* ===== 카드 — 한지 위에 떠 있는 종이 ===== */
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--r-l); box-shadow:var(--sh-paper)}
+.sect{margin-top:30px}
+.sect-hd{display:flex; align-items:center; gap:9px; margin-bottom:12px; padding:0 2px}
+.sect-hd h2{font-size:15.5px}
 .sect-hd .n{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3); margin-left:auto}
 
-.chip{
-  display:inline-flex; align-items:center; gap:4px; font-family:var(--lat);
-  font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase;
-  padding:3px 7px; border-radius:6px; white-space:nowrap;
-}
+.chip{display:inline-flex; align-items:center; gap:4px; font-family:var(--lat); font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:3px 7px; border-radius:var(--r-s); white-space:nowrap}
 .chip.ok{background:var(--nok-tint); color:var(--nok)}
 .chip.est{background:var(--hwang-tint); color:var(--hwang)}
 .chip.en{background:var(--cheong-tint); color:var(--cheong)}
+.chip.ko{background:var(--hong-tint); color:var(--hong)}
 
-.ring{--p:0; width:44px; height:44px; flex:none; position:relative}
+/* ===== 괘 표식 ===== */
+.gwae{width:17px; height:15px; flex:none}
+.gwae rect{fill:currentColor}
+
+/* ===== 유형 필터 / 지도 필터 ===== */
+.filters{display:flex; gap:6px; overflow-x:auto; padding:2px 2px 4px; margin:0 -2px 14px; scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.fbtn{
+  display:inline-flex; align-items:center; gap:6px; flex:none;
+  background:var(--card); border:1px solid var(--line-2); border-radius:var(--r-m);
+  padding:7px 11px; font-size:12.5px; font-weight:700; color:var(--ink-2); transition:background .14s, border-color .14s, color .14s;
+}
+.fbtn .c{font-family:var(--lat); font-size:10.5px; font-weight:600; color:var(--ink-3)}
+.fbtn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--card)}
+.fbtn[aria-pressed="true"] .c{color:var(--card); opacity:.65}
+.fbtn.g[aria-pressed="true"]{background:var(--hong); border-color:var(--hong); color:#fff}
+.fbtn.k[aria-pressed="true"]{background:var(--nok); border-color:var(--nok); color:#fff}
+
+/* ===== 진도 — 단청 색동이 채워지는 게이지 ===== */
+.dan{
+  background-image:repeating-linear-gradient(90deg,
+    var(--hong) 0 9px, var(--hwang) 9px 18px, var(--nok) 18px 27px, var(--cheong) 27px 36px);
+}
+.tk{display:block; overflow:hidden}
+.fl{display:block; height:100%}
+.ring{position:relative; flex:none}
 .ring svg{transform:rotate(-90deg)}
 .ring .t{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--lat); font-size:11px; font-weight:700}
 
-/* bilingual */
+/* 한·영 병기 */
 .bi{display:grid; gap:7px}
 .bi .r{display:grid; grid-template-columns:20px 1fr; gap:8px; align-items:start}
 .bi .tg{font-family:var(--lat); font-size:9px; font-weight:700; letter-spacing:.08em; color:var(--ink-3); padding-top:4px}
 .bi .r.e .x{color:var(--cheong)}
-.bi .x{line-height:1.62}
+.bi .x{line-height:1.66}
 
-/* ===== home / map ===== */
+/* ===== 홈 ===== */
 .hero{padding:2px 2px 4px}
 .hero .kicker{display:flex; align-items:center; gap:7px}
 .hero .flagdot{width:11px; height:11px; border-radius:50%; background:var(--hong); box-shadow:0 0 0 3px var(--hong-tint); flex:none}
-.hero h1{font-size:clamp(24px,7vw,30px); margin-top:12px}
-.hero p{margin-top:9px; color:var(--ink-2); font-size:14px}
-.statrow{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:16px}
-.stat{background:var(--card); border-radius:var(--r-m); padding:12px 13px; box-shadow:var(--sh-1)}
+.hero h1{font-size:clamp(24px,7vw,31px); margin-top:13px}
+.hero p{margin-top:10px; color:var(--ink-2); font-size:14px}
+.statrow{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:18px}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); padding:12px 13px; box-shadow:var(--sh-paper)}
 .stat b{display:block; font-family:var(--lat); font-size:21px; font-weight:700; letter-spacing:-.02em; line-height:1.1}
 .stat span{display:block; font-size:11px; color:var(--ink-3); margin-top:3px; font-weight:500}
 
@@ -193,88 +220,94 @@ a{color:var(--cheong); text-decoration:none}
 .maplg i{width:8px; height:8px; border-radius:50%; flex:none}
 .mapnote{padding:2px 6px 4px; font-size:11.5px; color:var(--ink-3); line-height:1.5}
 
-.pin{cursor:pointer}
+.pin{cursor:pointer; transition:opacity .2s}
 .pin .d{fill:var(--card); stroke:var(--hong); stroke-width:2.4}
 .pin text{font-family:var(--lat); font-size:19px; font-weight:700; fill:var(--hong); text-anchor:middle; dominant-baseline:central; pointer-events:none}
 .pin.on .d{fill:var(--hong); stroke:var(--card); stroke-width:3.6}
 .pin.on text{fill:#fff}
-.pin.done .d{stroke:var(--nok)}
-.pin.done text{fill:var(--nok)}
+.pin.done .d{stroke:var(--nok); fill:var(--nok)}
+.pin.done text{fill:#fff}
+.pin.dim{opacity:.18}
 .pinlab{font-family:var(--ui); font-size:17px; font-weight:700; fill:var(--ink); paint-order:stroke; stroke:var(--card); stroke-width:6px; stroke-linejoin:round; pointer-events:none}
 .geo{font-family:var(--lat); font-size:15px; font-weight:600; letter-spacing:.14em; fill:var(--ink-3); pointer-events:none}
 
-/* ===== list ===== */
-.slist{display:grid; gap:9px}
+/* ===== 목록 ===== */
+.slist{display:grid; gap:8px}
 .srow{
   display:grid; grid-template-columns:40px 1fr auto; align-items:center; gap:12px;
-  background:var(--card); border-radius:var(--r-m); padding:13px 14px; box-shadow:var(--sh-1);
-  text-align:left; width:100%; min-height:62px;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-m);
+  padding:13px 14px; box-shadow:var(--sh-paper); text-align:left; width:100%; min-height:64px;
+  transition:transform .09s, box-shadow .14s;
 }
-.srow:active{transform:scale(.988)}
-.srow .no{
-  font-family:var(--lat); font-size:13px; font-weight:700; color:var(--hong);
-  background:var(--hong-tint); border-radius:9px; width:40px; height:40px; display:grid; place-items:center;
-}
+.srow:active{transform:scale(.988); box-shadow:none}
+.srow .no{font-family:var(--lat); font-size:13px; font-weight:700; color:var(--hong); background:var(--hong-tint); border-radius:var(--r-s); width:40px; height:40px; display:grid; place-items:center}
 .srow.done .no{color:var(--nok); background:var(--nok-tint)}
 .srow .tx{min-width:0}
 .srow .tx b{display:block; font-size:15.5px; font-weight:700; letter-spacing:-.01em}
-.srow .tx em{display:block; font-style:normal; font-family:var(--lat); font-size:11.5px; font-weight:500; color:var(--ink-3); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.srow .tx .meta{display:flex; align-items:center; gap:6px; margin-top:2px; color:var(--ink-3)}
+.srow .tx .meta em{font-style:normal; font-family:var(--lat); font-size:11px; font-weight:600; letter-spacing:.03em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .srow .rt{display:flex; align-items:center; gap:8px; color:var(--ink-3)}
 .srow .rt .pg{font-family:var(--lat); font-size:11px; font-weight:600}
 .srow .rt svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2}
 
-/* ===== site detail ===== */
-.shd{padding:2px 2px 0}
-.shd .top{display:flex; align-items:center; gap:9px}
-.shd .badge{font-family:var(--lat); font-size:11px; font-weight:700; letter-spacing:.06em; color:#fff; background:var(--hong); padding:4px 9px; border-radius:7px}
-.shd h1{font-size:clamp(23px,6.5vw,29px); margin-top:12px}
-.shd .sub{font-family:var(--lat); font-size:13.5px; font-weight:500; color:var(--cheong); margin-top:4px}
-.shd .addr{margin-top:12px; color:var(--ink-2); font-size:13.5px}
-.gobtns{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px}
-.gobtn{
-  display:flex; align-items:center; justify-content:center; gap:7px;
-  background:var(--card); border:1px solid var(--line-2); border-radius:var(--r-m);
-  padding:11px; font-size:13.5px; font-weight:700; color:var(--ink);
+/* ===== 답사지 상세 — 처마 단청 머리띠 ===== */
+.eave{position:relative; margin:-22px -16px 0; overflow:hidden}
+.eave svg{display:block; width:100%; height:auto}
+.eave .lbl{
+  position:absolute; left:16px; top:20px; display:flex; align-items:center; gap:7px;
+  color:var(--ink-2); font-size:12px; font-weight:700; letter-spacing:.01em;
 }
+.shd{padding:18px 2px 0}
+.shd .top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.shd .badge{font-family:var(--lat); font-size:11px; font-weight:700; letter-spacing:.06em; color:#fff; background:var(--hong); padding:4px 9px; border-radius:var(--r-s)}
+.shd.fin .badge{background:var(--nok)}
+.shd h1{font-size:clamp(23px,6.5vw,29px); margin-top:13px}
+.shd .sub{font-family:var(--lat); font-size:13.5px; font-weight:600; color:var(--cheong); margin-top:4px}
+.shd .addr{margin-top:13px; color:var(--ink-2); font-size:13.5px}
+.gobtns{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:15px}
+.gobtn{display:flex; align-items:center; justify-content:center; gap:7px; background:var(--card); border:1px solid var(--line-2); border-radius:var(--r-m); padding:12px; font-size:13.5px; font-weight:700; color:var(--ink); transition:transform .09s}
 .gobtn svg{width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round}
-.gobtn:active{background:var(--card-2)}
+.gobtn:active{transform:scale(.985); background:var(--card-2)}
 
+/* 체크 — 완료 시 녹색 취소선과 배경 */
 .checkrow{
   display:grid; grid-template-columns:24px 1fr; gap:12px; align-items:start; width:100%; text-align:left;
-  background:var(--card); border-radius:var(--r-m); padding:14px; box-shadow:var(--sh-1); min-height:56px;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); padding:14px;
+  box-shadow:var(--sh-paper); min-height:58px; transition:background .18s, border-color .18s, transform .09s;
 }
 .checkrow + .checkrow{margin-top:8px}
-.checkrow .bx{
-  width:23px; height:23px; border-radius:7px; border:2px solid var(--line-2);
-  display:grid; place-items:center; margin-top:1px; flex:none; transition:background .16s, border-color .16s;
-}
-.checkrow .bx svg{width:13px; height:13px; stroke:#fff; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:0}
+.checkrow:active{transform:scale(.99)}
+.checkrow .bx{width:23px; height:23px; border-radius:var(--r-s); border:2px solid var(--line-2); display:grid; place-items:center; margin-top:1px; flex:none; transition:background .16s, border-color .16s}
+.checkrow .bx svg{width:13px; height:13px; stroke:#fff; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:0; transition:opacity .16s}
+.checkrow.on{background:var(--nok-tint); border-color:transparent; box-shadow:none}
 .checkrow.on .bx{background:var(--nok); border-color:var(--nok)}
 .checkrow.on .bx svg{opacity:1}
-.checkrow.on .cx{color:var(--ink-3)}
+.checkrow.on .cx .x{text-decoration:line-through; text-decoration-color:var(--nok); text-decoration-thickness:1.5px; color:var(--ink-3)}
 .cx{font-size:14px}
 
-.pt{background:var(--card); border-radius:var(--r-m); padding:15px; box-shadow:var(--sh-1)}
-.pt + .pt{margin-top:9px}
+.pt{background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); padding:15px; box-shadow:var(--sh-paper); transition:background .18s, border-color .18s}
+.pt + .pt{margin-top:8px}
+.pt.done{background:var(--nok-tint); border-color:transparent; box-shadow:none}
 .pt .ph{display:flex; align-items:flex-start; gap:9px}
-.pt h3{font-size:15.5px; font-weight:900; flex:1}
+.pt h3{font-size:15.5px; flex:1}
 .pt h3 .pe{display:block; font-family:var(--lat); font-size:12.5px; font-weight:600; color:var(--cheong); margin-top:3px; letter-spacing:0}
 .pt .pb{margin-top:10px; font-size:14px}
 
-.info{background:var(--card); border-radius:var(--r-m); padding:15px; box-shadow:var(--sh-1); font-size:14px}
+.info{background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); padding:15px; box-shadow:var(--sh-paper); font-size:14px}
 .info .lb{margin-bottom:8px}
 
+.flist{background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); box-shadow:var(--sh-paper); overflow:hidden}
 .frow{display:grid; grid-template-columns:1fr auto; gap:4px 12px; padding:12px 14px; border-bottom:1px solid var(--line)}
 .frow:last-child{border-bottom:0}
 .frow b{font-size:14px; font-weight:700}
 .frow .ad{font-size:12px; color:var(--ink-3); grid-column:1/-1}
 .frow .tg{font-size:11.5px; color:var(--ink-2); text-align:right; white-space:nowrap}
-.flist{background:var(--card); border-radius:var(--r-m); box-shadow:var(--sh-1); overflow:hidden}
 
-.note{font-size:12.5px; color:var(--ink-2); background:var(--hwang-tint); border-radius:var(--r-s); padding:10px 12px; margin-bottom:11px; line-height:1.55}
+.note{font-size:12.5px; color:var(--ink-2); background:var(--hwang-tint); border-left:2px solid var(--hwang); border-radius:0 var(--r-s) var(--r-s) 0; padding:10px 12px; margin-bottom:11px; line-height:1.55}
+.src-note{font-size:12px; color:var(--ink-3); line-height:1.6; padding:0 4px}
 
-/* ===== drill ===== */
-.qcard{background:var(--card); border-radius:var(--r-l); padding:22px 20px; box-shadow:var(--sh-2); min-height:230px; display:flex; flex-direction:column}
+/* ===== 연습 ===== */
+.qcard{background:var(--card); border:1px solid var(--line); border-radius:var(--r-l); padding:22px 20px; box-shadow:var(--sh-lift); min-height:232px; display:flex; flex-direction:column}
 .qcard .src{display:flex; align-items:center; gap:8px; margin-bottom:14px}
 .qcard .src .s1{font-family:var(--lat); font-size:11px; font-weight:700; color:var(--hong)}
 .qcard .src .s2{font-size:11.5px; color:var(--ink-3); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
@@ -285,43 +318,49 @@ a{color:var(--cheong); text-decoration:none}
 .qcard .ans{margin-top:16px; padding-top:16px; border-top:1px dashed var(--line-2); font-size:14px}
 .acts{display:grid; gap:8px; margin-top:14px}
 .acts.two{grid-template-columns:1fr 1fr}
-.bigbtn{border-radius:var(--r-m); padding:14px; font-size:15px; font-weight:800; letter-spacing:-.01em; min-height:50px}
+.bigbtn{border-radius:var(--r-m); padding:14px; font-size:15px; font-weight:800; letter-spacing:-.01em; min-height:50px; transition:transform .08s, background .14s}
+.bigbtn:active{transform:scale(.978)}
 .bigbtn.p{background:var(--hong); color:#fff}
 .bigbtn.p:active{background:var(--hong-ink)}
 .bigbtn.s{background:var(--card); border:1px solid var(--line-2); color:var(--ink)}
 .bigbtn.s:active{background:var(--card-2)}
 .bigbtn.g{background:var(--nok); color:#fff}
-.scopeseg{display:flex; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:3px; gap:3px; margin-bottom:14px}
-.scopeseg button{flex:1; font-size:12.5px; font-weight:700; padding:7px; border-radius:999px; color:var(--ink-2)}
+.scopeseg{display:flex; background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); padding:3px; gap:3px; margin-bottom:14px}
+.scopeseg button{flex:1; font-size:12.5px; font-weight:700; padding:8px; border-radius:var(--r-s); color:var(--ink-2); transition:background .14s}
 .scopeseg button[aria-pressed="true"]{background:var(--ink); color:var(--card)}
 
-/* ===== me ===== */
-.bigring{display:flex; gap:18px; align-items:center; background:var(--card); border-radius:var(--r-l); padding:18px; box-shadow:var(--sh-1)}
-.bigring .ring{width:78px; height:78px}
-.bigring .ring .t{font-size:17px}
-.bigring .tx b{display:block; font-size:16px; font-weight:900}
+/* ===== 내 진도 ===== */
+.bigring{display:flex; gap:18px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:var(--r-l); padding:18px; box-shadow:var(--sh-paper)}
+.bigring .tx b{display:block; font-size:16px}
 .bigring .tx span{display:block; font-size:12.5px; color:var(--ink-2); margin-top:3px}
 .pbar{display:grid; grid-template-columns:30px 1fr 42px; gap:10px; align-items:center; padding:7px 0}
 .pbar .l{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3)}
-.pbar .tk{height:6px; background:var(--card-2); border-radius:99px; overflow:hidden}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pbar .tk{background:#262A33}}
-:root[data-theme="dark"] .pbar .tk{background:#262A33}
-.pbar .fl{height:100%; background:var(--hong); border-radius:99px; transition:width .35s}
-.pbar .fl.full{background:var(--nok)}
+.pbar .tk{height:7px; background:var(--card-2); border:1px solid var(--line); border-radius:var(--r-s); overflow:hidden}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pbar .tk{background:#22262F}}
+:root[data-theme="dark"] .pbar .tk{background:#22262F}
+.pbar .fl{height:100%; transition:width .4s cubic-bezier(.22,.8,.3,1)}
 .pbar .v{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3); text-align:right}
 
-.maker{background:var(--card); border-radius:var(--r-l); padding:20px; box-shadow:var(--sh-1); text-align:center}
-.maker .mark{
-  font-family:var(--lat); font-size:27px; font-weight:700; letter-spacing:.2em;
-  display:inline-block; padding:0 0 0 .2em; color:var(--ink);
-}
+.maker{background:var(--card); border:1px solid var(--line); border-radius:var(--r-l); padding:22px; box-shadow:var(--sh-paper); text-align:center}
+.maker .seal{display:inline-grid; place-items:center; width:58px; height:58px; border:2px solid var(--hong); border-radius:var(--r-s); margin-bottom:12px}
+.maker .seal span{font-size:11px; font-weight:900; color:var(--hong); line-height:1.15; letter-spacing:.04em}
+.maker .mark{font-family:var(--lat); font-size:26px; font-weight:700; letter-spacing:.2em; padding-left:.2em; display:block}
 .maker .role{font-size:12px; color:var(--ink-3); margin-top:6px; font-weight:500}
-.maker .ver{display:inline-block; margin-top:12px; font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-2); background:var(--card-2); padding:4px 10px; border-radius:999px}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .maker .ver{background:#242933}}
-:root[data-theme="dark"] .maker .ver{background:#242933}
+.maker .ver{display:inline-block; margin-top:12px; font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-2); background:var(--card-2); border:1px solid var(--line); padding:4px 10px; border-radius:var(--r-s)}
+
+.linkrow{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:var(--r-m); padding:14px; box-shadow:var(--sh-paper); font-size:14px; font-weight:600; transition:transform .09s}
+.linkrow + .linkrow{margin-top:8px}
+.linkrow:active{transform:scale(.99)}
+.linkrow svg{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; color:var(--ink-3)}
+.linkrow .ar{margin-left:auto; color:var(--ink-3)}
+.linkrow.warn{color:var(--hong)}
+.sw{margin-left:auto; width:42px; height:25px; border-radius:99px; background:var(--line-2); position:relative; flex:none; transition:background .18s}
+.sw::after{content:""; position:absolute; top:3px; left:3px; width:19px; height:19px; border-radius:50%; background:var(--card); box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .18s}
+.linkrow[aria-pressed="true"] .sw{background:var(--nok)}
+.linkrow[aria-pressed="true"] .sw::after{transform:translateX(17px)}
 
 .hist{position:relative; padding-left:20px}
-.hist::before{content:""; position:absolute; left:4px; top:8px; bottom:8px; width:2px; background:var(--line)}
+.hist::before{content:""; position:absolute; left:4px; top:8px; bottom:8px; width:2px; background:var(--line-2)}
 .hitem{position:relative; padding:9px 0}
 .hitem::before{content:""; position:absolute; left:-20px; top:16px; width:10px; height:10px; border-radius:50%; background:var(--card); border:2px solid var(--line-2)}
 .hitem.now::before{background:var(--hong); border-color:var(--hong)}
@@ -329,14 +368,55 @@ a{color:var(--cheong); text-decoration:none}
 .hitem .hd{font-family:var(--lat); font-size:10.5px; font-weight:600; color:var(--ink-3); margin-left:7px}
 .hitem .hb{font-size:13.5px; color:var(--ink-2); margin-top:3px}
 
-.linkrow{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:var(--card); border-radius:var(--r-m); padding:14px; box-shadow:var(--sh-1); font-size:14px; font-weight:600}
-.linkrow + .linkrow{margin-top:8px}
-.linkrow svg{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; color:var(--ink-3)}
-.linkrow .ar{margin-left:auto; color:var(--ink-3)}
-.linkrow.warn{color:var(--hong)}
-.src-note{font-size:12px; color:var(--ink-3); line-height:1.6; padding:0 4px}
+/* ===== 바텀 시트 — 지도에서 답사지 미리보기 ===== */
+.sheetwrap{position:fixed; inset:0; z-index:60}
+.sheetbg{position:absolute; inset:0; background:rgba(20,22,27,.42); opacity:0; transition:opacity .22s}
+.sheetwrap.in .sheetbg{opacity:1}
+.sheet{
+  position:absolute; left:0; right:0; bottom:0; max-width:520px; margin:0 auto;
+  background:var(--card); border-top:1px solid var(--line);
+  border-radius:var(--r-l) var(--r-l) 0 0; box-shadow:var(--sh-lift);
+  padding:8px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+  transform:translateY(102%); transition:transform .26s cubic-bezier(.22,.8,.3,1);
+}
+.sheetwrap.in .sheet{transform:none}
+.sheet .grip{width:38px; height:4px; border-radius:99px; background:var(--line-2); margin:0 auto 14px}
+.sheet .sh-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.sheet h3{font-size:20px; margin-top:11px}
+.sheet .sh-en{font-family:var(--lat); font-size:12.5px; font-weight:600; color:var(--cheong); margin-top:3px}
+.sheet .sh-ad{font-size:12.5px; color:var(--ink-2); margin-top:9px}
+.sheet .sh-pg{display:flex; align-items:center; gap:9px; margin-top:13px}
+.sheet .sh-pg .tk{flex:1; height:7px; background:var(--card-2); border:1px solid var(--line); border-radius:var(--r-s); overflow:hidden}
+.sheet .sh-pg .fl{height:100%}
+.sheet .sh-pg .v{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3)}
+.sheet .sh-acts{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px}
+@media (prefers-reduced-motion: reduce){.sheetbg,.sheet{transition:none}}
 
-@media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
+/* ===== 낙관 스탬프 — 답사지 체크를 다 채웠을 때 ===== */
+.stamp{position:fixed; inset:0; z-index:70; display:grid; place-items:center; pointer-events:none; background:rgba(20,22,27,.16)}
+.stamp .sl{
+  width:132px; height:132px; border:4px solid var(--hong); border-radius:10px;
+  background:var(--card); display:grid; grid-template-columns:1fr 1fr; align-content:center;
+  place-items:center; gap:2px; padding:12px; box-shadow:0 10px 40px rgba(205,46,58,.35);
+}
+.stamp .sl i{font-style:normal; font-size:31px; font-weight:900; color:var(--hong); line-height:1}
+.stamp .cap2{margin-top:14px; font-size:13px; font-weight:700; color:#fff; background:var(--hong); padding:5px 13px; border-radius:99px; text-align:center}
+.stamp .inner{display:grid; justify-items:center; animation:seal .62s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes seal{
+  0%{opacity:0; transform:scale(2.1) rotate(-13deg)}
+  55%{opacity:1; transform:scale(.94) rotate(-4deg)}
+  75%{transform:scale(1.03) rotate(-6deg)}
+  100%{opacity:1; transform:scale(1) rotate(-5deg)}
+}
+@media (prefers-reduced-motion: reduce){.stamp .inner{animation:none}}
+.stamp.out{opacity:0; transition:opacity .3s}
+
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+@media (max-width:560px){
+  .view{padding:20px 16px 118px}
+  .appbar{padding:9px 14px}
+  .qcard{padding:20px 17px}
+}
 </style>
 </head>
 <body>
@@ -371,17 +451,19 @@ a{color:var(--cheong); text-decoration:none}
       </button>
     </div>
   </nav>
+
+  <div class="sheetwrap" id="sheetWrap" hidden>
+    <div class="sheetbg" id="sheetBg"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="답사지 미리보기"></div>
+  </div>
+
+  <div class="stamp" id="stamp" hidden></div>
 </div>
 
 <script>
-/* ============================================================
-   한국탐방 해설사 — 청소년 문화유산해설사 답사 앱
-   출처: 「청소년 문화유산해설사 준비 여행일지 (반포 출발)」 2026-09-20
-   conf 표기: 검색 확인 = fact / 추정 = est
-   ============================================================ */
 const SITES = [
 {
-  no:1, lat:37.5820, lng:126.9793,
+  cat:"mus", no:1, lat:37.5820, lng:126.9793,
   ko:"국립민속박물관", en:"National Folk Museum of Korea",
   addr:"서울 종로구 삼청로 37 (경복궁 내)",
   addrEn:"37 Samcheong-ro, Jongno-gu (inside Gyeongbokgung)",
@@ -415,7 +497,7 @@ const SITES = [
   ]
 },
 {
-  no:2, lat:37.5370, lng:126.9776,
+  cat:"mod", no:2, lat:37.5370, lng:126.9776,
   ko:"전쟁기념관", en:"The War Memorial of Korea",
   addr:"서울 용산구 이태원로 29",
   addrEn:"29 Itaewon-ro, Yongsan-gu",
@@ -450,7 +532,7 @@ const SITES = [
   ]
 },
 {
-  no:3, lat:37.5794, lng:126.9910,
+  cat:"gung", no:3, lat:37.5794, lng:126.9910,
   ko:"창덕궁", en:"Changdeokgung Palace",
   addr:"서울 종로구 율곡로 99",
   addrEn:"99 Yulgok-ro, Jongno-gu",
@@ -484,7 +566,7 @@ const SITES = [
   ]
 },
 {
-  no:4, lat:37.5785, lng:126.9950,
+  cat:"gung", no:4, lat:37.5785, lng:126.9950,
   ko:"창경궁", en:"Changgyeonggung Palace",
   addr:"서울 종로구 창경궁로 185",
   addrEn:"185 Changgyeonggung-ro, Jongno-gu",
@@ -518,7 +600,7 @@ const SITES = [
   ]
 },
 {
-  no:5, lat:37.5658, lng:126.9751,
+  cat:"gung", no:5, lat:37.5658, lng:126.9751,
   ko:"덕수궁", en:"Deoksugung Palace",
   addr:"서울 중구 세종대로 99",
   addrEn:"99 Sejong-daero, Jung-gu",
@@ -552,7 +634,7 @@ const SITES = [
   ]
 },
 {
-  no:6, lat:37.5744, lng:126.9560,
+  cat:"mod", no:6, lat:37.5744, lng:126.9560,
   ko:"서대문형무소역사관", en:"Seodaemun Prison History Hall",
   addr:"서울 서대문구 통일로 251",
   addrEn:"251 Tongil-ro, Seodaemun-gu",
@@ -589,7 +671,7 @@ const SITES = [
   ]
 },
 {
-  no:7, lat:37.5240, lng:126.9803,
+  cat:"mus", no:7, lat:37.5240, lng:126.9803,
   ko:"국립중앙박물관", en:"National Museum of Korea",
   addr:"서울 용산구 서빙고로 137",
   addrEn:"137 Seobinggo-ro, Yongsan-gu",
@@ -624,7 +706,7 @@ const SITES = [
   ]
 },
 {
-  no:8, lat:37.5853, lng:126.9942,
+  cat:"vill", no:8, lat:37.5853, lng:126.9942,
   ko:"성균관(문묘)", en:"Seonggyungwan and Munmyo",
   addr:"서울 종로구 성균관로 25-1",
   addrEn:"25-1 Sungkyunkwan-ro, Jongno-gu",
@@ -658,7 +740,7 @@ const SITES = [
   ]
 },
 {
-  no:9, lat:37.5744, lng:126.9866,
+  cat:"gung", no:9, lat:37.5744, lng:126.9866,
   ko:"운현궁", en:"Unhyeongung Royal Residence",
   addr:"서울 종로구 삼일대로 464",
   addrEn:"464 Samil-daero, Jongno-gu",
@@ -692,7 +774,7 @@ const SITES = [
   ]
 },
 {
-  no:10, lat:37.5796, lng:126.9770,
+  cat:"gung", no:10, lat:37.5796, lng:126.9770,
   ko:"경복궁", en:"Gyeongbokgung Palace",
   addr:"서울 종로구 사직로 161",
   addrEn:"161 Sajik-ro, Jongno-gu",
@@ -726,7 +808,7 @@ const SITES = [
   ]
 },
 {
-  no:11, lat:37.5590, lng:126.9940,
+  cat:"vill", no:11, lat:37.5590, lng:126.9940,
   ko:"남산골한옥마을", en:"Namsangol Hanok Village",
   addr:"서울 중구 퇴계로34길 28",
   addrEn:"28 Toegye-ro 34-gil, Jung-gu",
@@ -760,7 +842,7 @@ const SITES = [
   ]
 },
 {
-  no:12, lat:37.5704, lng:126.9700,
+  cat:"mus", no:12, lat:37.5704, lng:126.9700,
   ko:"서울역사박물관", en:"Seoul Museum of History",
   addr:"서울 종로구 새문안로 55",
   addrEn:"55 Saemunan-ro, Jongno-gu",
@@ -798,33 +880,48 @@ const SITES = [
 const START = {lat:37.5049, lng:127.0048, ko:"반포 출발", en:"Banpo start"};
 const REPO = "https://github.com/dyhan0528/koreahistory";
 
+/* 답사지 유형 — 태극기 4괘를 실제 유형에 맞춰 배정했다.
+   괘는 위에서 아래로 세 획, 1=양(이어진 획) 0=음(끊긴 획).
+   감(☵)은 본래 물이자 험난(險)을 뜻하므로 전쟁·투옥의 근대사 현장에 두었다. */
+const CATS = {
+  gung:{bars:[1,1,1], gwae:"건", ko:"궁궐·왕실", en:"Palaces", tone:["--hong","--cheong"]},
+  mus: {bars:[1,0,1], gwae:"리", ko:"박물관",     en:"Museums", tone:["--cheong","--hwang"]},
+  mod: {bars:[0,1,0], gwae:"감", ko:"근대사 현장", en:"Modern history", tone:["--ink-2","--hong"]},
+  vill:{bars:[0,0,0], gwae:"곤", ko:"서원·마을",  en:"Village and academy", tone:["--nok","--hwang"]}
+};
+const CAT_ORDER = ["gung","mus","mod","vill"];
+
 const HISTORY = [
-  {v:"v1.0", d:"2026.09.20", ko:"앱 UI 전면 개편 — 하단 4탭 구조, 태극·오방색 팔레트, 한 화면 스크롤 상세, 진도 링",
-   en:"Full app UI rebuild — four-tab shell, taegeuk and obangsaek palette, single-scroll detail, progress rings"},
-  {v:"v0.1", d:"2026.09.20", ko:"여행일지 문서를 웹 답사노트로 변환 — 12강 데이터화, 한·영 대역, 좌표 기반 개략 지도",
-   en:"Field journal turned into a web note — 12 sites structured, Korean–English pairing, coordinate-based schematic map"}
+  {v:"v1.1", d:"2026.09.20", ko:"UX/UI 가이드북 적용 — 4괘 유형 분류, 처마 단청 머리띠, 지도 바텀 시트, 낙관 완료 스탬프, 단청 색동 게이지, 살창 구획선",
+   en:"Design guide applied — four-trigram categories, eave-and-dancheong header, map bottom sheet, seal stamp on completion, dancheong gauge, lattice dividers"},
+  {v:"v1.0", d:"2026.09.20", ko:"앱 UI 전면 개편 — 하단 4탭 구조, 태극·오방색 팔레트, 한 화면 스크롤 상세, 진도 링, PWA 구성",
+   en:"Full app UI rebuild — four-tab shell, taegeuk and obangsaek palette, single-scroll detail, progress rings, PWA"},
+  {v:"v0.1", d:"2026.09.20", ko:"여행일지 문서를 웹 답사노트로 변환 — 손상 docx 복구, 12강 데이터화, 한·영 대역, 좌표 기반 개략 지도",
+   en:"Field journal turned into a web note — damaged docx recovered, 12 sites structured, Korean–English pairing, coordinate-based map"}
 ];
 
 /* ---------------- i18n ---------------- */
 const T = {
   appName:{ko:"한국탐방 해설사", en:"Korea Heritage Guide"},
-  map:{ko:"답사 지도", en:"Field map"}, list:{ko:"답사지 12", en:"12 sites"},
-  drill:{ko:"해설 연습", en:"Drill"}, me:{ko:"내 진도", en:"My progress"},
+  list:{ko:"답사지 12", en:"12 sites"}, drill:{ko:"해설 연습", en:"Drill"}, me:{ko:"내 진도", en:"My progress"},
   kicker:{ko:"청소년 문화유산해설사 과정", en:"Youth heritage interpreter course"},
   h1:{ko:"반포에서 출발하는\n서울 답사 12곳", en:"Twelve Seoul sites,\nstarting from Banpo"},
-  lede:{ko:"지도에서 번호를 누르면 그 답사지의 체크리스트와 한·영 해설이 한 화면에 펼쳐집니다.",
-        en:"Tap a number on the map and that site's checklist and bilingual script open in one screen."},
+  lede:{ko:"지도에서 번호를 누르면 그 답사지를 미리 보고, 바로 상세로 들어갈 수 있습니다.",
+        en:"Tap a number on the map to preview a site, then open it in full."},
   stSites:{ko:"답사지", en:"Sites"}, stPoints:{ko:"해설 포인트", en:"Points"}, stChecks:{ko:"체크 항목", en:"Checks"},
-  lgSite:{ko:"답사지", en:"Site"}, lgDone:{ko:"체크 완료", en:"Done"}, lgStart:{ko:"출발 반포", en:"Start"},
+  lgSite:{ko:"미방문", en:"Not yet"}, lgDone:{ko:"완료", en:"Done"}, lgStart:{ko:"출발 반포", en:"Start"},
   lgRiver:{ko:"한강", en:"Han River"}, lgHill:{ko:"내사산", en:"Mountains"},
   mapNote:{ko:"실제 위·경도로 배치한 개략도입니다. 길찾기는 각 답사지의 지도 버튼을 쓰세요.",
            en:"A schematic placed from real coordinates. Use each site's map button for navigation."},
+  fAll:{ko:"전체", en:"All"}, fTodo:{ko:"미방문", en:"Not yet"}, fDone:{ko:"완료", en:"Done"},
   see:{ko:"답사에서 볼 것", en:"See on site"}, learn:{ko:"해설 포인트", en:"Talking points"},
   route:{ko:"가는 길", en:"Getting there"}, food:{ko:"주변 식당", en:"Nearby food"},
-  seeHint:{ko:"현장에서 확인하고 눌러 체크하세요.", en:"Tap each one once you have checked it on site."},
+  seeHint:{ko:"현장에서 확인하고 눌러 체크하세요. 세 개를 다 채우면 낙관이 찍힙니다.",
+           en:"Tap each one once you have checked it on site. Fill all three and a seal is stamped."},
   learnHint:{ko:"시험에서는 같은 내용을 한국어와 영어로 모두 말해야 합니다.", en:"In the exam you must deliver the same content in both Korean and English."},
   fact:{ko:"검색 확인", en:"Verified"}, est:{ko:"추정", en:"Estimate"}, learned:{ko:"외움", en:"Learned"},
-  addr:{ko:"주소", en:"Address"}, gmap:{ko:"구글 지도", en:"Google Maps"}, nmap:{ko:"네이버 지도", en:"Naver Map"},
+  gmap:{ko:"구글 지도", en:"Google Maps"}, nmap:{ko:"네이버 지도", en:"Naver Map"},
+  detail:{ko:"자세히 보기", en:"Open in full"},
   fromBanpo:{ko:"반포 출발 경로", en:"Route from Banpo"},
   foodSrc:{ko:"구글 지도 검색 결과 · 2026-09-20 기준", en:"From Google Maps search · as of 20 Sept 2026"},
   scopeAll:{ko:"전체 12곳", en:"All 12 sites"}, scopeOne:{ko:"이 답사지만", en:"This site only"},
@@ -833,23 +930,27 @@ const T = {
   next:{ko:"다음 문제", en:"Next"}, shuffleAgain:{ko:"한 바퀴 끝! 다시 섞기", en:"Deck finished — shuffle again"},
   bothNote:{ko:"시험 대비 — 한국어·영어 함께 표시", en:"Exam practice — Korean and English together"},
   checksDone:{ko:"답사 체크", en:"Site checks"}, pointsDone:{ko:"해설 암기", en:"Points learned"},
-  overall:{ko:"전체 진도", en:"Overall"},
-  bySite:{ko:"답사지별 진도", en:"Progress by site"},
+  overall:{ko:"전체 진도", en:"Overall"}, bySite:{ko:"답사지별 진도", en:"Progress by site"},
+  byType:{ko:"유형별 답사지", en:"Sites by type"},
   install:{ko:"홈 화면에 앱으로 추가", en:"Add to home screen"},
-  repo:{ko:"소스코드 · 개발 기록 보기", en:"Source code and commit log"},
   installHow:{ko:"브라우저 공유·메뉴에서 ‘홈 화면에 추가’를 누르면 앱 아이콘으로 실행됩니다.",
               en:"Use your browser's share or menu, then “Add to Home Screen,” to launch it as an app icon."},
+  repo:{ko:"소스코드 · 개발 기록 보기", en:"Source code and commit log"},
+  sound:{ko:"완료 소리와 진동", en:"Completion sound and haptics"},
+  soundHow:{ko:"답사지 체크를 다 채우면 낙관이 찍히면서 짧은 현악 소리가 납니다. 기본은 꺼져 있습니다.",
+            en:"When a site is fully checked, a seal stamps with a short plucked-string tone. Off by default."},
   histTitle:{ko:"개발 히스토리", en:"Release history"},
-  maker:{ko:"기획·개발·배포", en:"Design, build, release"},
+  maker:{ko:"기획 · 개발 · 배포", en:"Design, build, release"},
   reset:{ko:"진도 초기화", en:"Reset progress"},
   resetAsk:{ko:"체크와 암기 진도를 모두 지울까요?", en:"Clear every check and every learned point?"},
+  sealDone:{ko:"답사 완료", en:"Site complete"},
   source:{ko:"출처: 「청소년 문화유산해설사 준비 여행일지 (반포 출발)」 2026-09-20. ‘검색 확인’은 검색으로 확인된 사실, ‘추정’은 확인되지 않은 추정입니다. 운영 시간·예약 방법·의식 시간표는 방문 전 공식 안내로 다시 확인하세요. 진도는 이 브라우저에만 저장됩니다.",
           en:"Source: “Youth Heritage Interpreter field journal (from Banpo),” 20 Sept 2026. “Verified” marks facts confirmed by search; “Estimate” marks unconfirmed guesses. Re-check opening hours, bookings and ceremony times against official notices before you go. Progress is stored only in this browser."}
 };
 
-/* ---------------- state ---------------- */
-const KEY = "dyhan-heritage-v2";
-let st = {lang:"ko", view:"map", sel:1, checks:{}, known:{}, scope:"all"};
+/* ---------------- 상태 ---------------- */
+const KEY = "dyhan-heritage-v3";
+let st = {lang:"ko", view:"map", sel:1, checks:{}, known:{}, scope:"all", filt:"all", cat:"all", sound:false};
 try{ const r = localStorage.getItem(KEY); if(r) st = Object.assign(st, JSON.parse(r) || {}); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
 
@@ -867,58 +968,139 @@ const site = () => SITES.find(s => s.no === st.sel) || SITES[0];
 const TOT_CHK = SITES.reduce((n,s) => n + s.see.length, 0);
 const POINTS = SITES.flatMap(s => s.learn.map((p,i) => ({...p, no:s.no, sko:s.ko, sen:s.en, id:s.no + "-" + i})));
 const chkDone = s => s.see.filter((_,i) => st.checks[s.no + "-" + i]).length;
+const isFin = s => chkDone(s) === s.see.length;
 const nChecks = () => Object.keys(st.checks).filter(k => st.checks[k]).length;
 const nKnown = () => Object.keys(st.known).filter(k => st.known[k]).length;
+const catOf = s => CATS[s.cat];
 
 const ICO = {
   pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
-  ext:'<path d="M14 4h6v6M20 4l-8.5 8.5M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>',
   chev:'<path d="M9 5l7 7-7 7"/>',
   check:'<path d="M4.5 12.5l5 5 10-11"/>',
   phone:'<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
   code:'<path d="M9 18l-5-6 5-6M15 6l5 6-5 6"/>',
+  bell:'<path d="M18 8a6 6 0 1 0-12 0c0 7-2 8-2 8h16s-2-1-2-8M10.5 20a2 2 0 0 0 3 0"/>',
   trash:'<path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/>'
 };
 const svg = (d, cls) => `<svg viewBox="0 0 24 24" class="${cls||""}">${d}</svg>`;
 
-/* ---------------- ring ---------------- */
-function ring(done, total, size, color){
-  const r = (size - 6) / 2, c = 2 * Math.PI * r, p = total ? done / total : 0;
+/* 괘 표식 — 이어진 획은 양, 끊긴 획은 음 */
+function gwaeSvg(bars){
+  const rows = bars.map((b,i) => {
+    const y = i * 5.5;
+    return b
+      ? `<rect x="0" y="${y}" width="17" height="3" rx="1"></rect>`
+      : `<rect x="0" y="${y}" width="7" height="3" rx="1"></rect><rect x="10" y="${y}" width="7" height="3" rx="1"></rect>`;
+  }).join("");
+  return `<svg class="gwae" viewBox="0 0 17 14.5" aria-hidden="true">${rows}</svg>`;
+}
+
+/* ---------------- 단청 진도 게이지 ---------------- */
+function danBar(done, total, h){
+  const p = total ? done / total * 100 : 0;
+  return `<span class="tk" style="${h ? "height:" + h + "px" : ""}"><span class="fl dan" style="width:${p}%"></span></span>`;
+}
+function ring(done, total, size){
+  const r = (size - 7) / 2, c = 2 * Math.PI * r, p = total ? done / total : 0;
   return `<div class="ring" style="width:${size}px;height:${size}px">
-    <svg width="${size}" height="${size}">
-      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"></circle>
-      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="5"
-        stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}"></circle>
+    <svg width="${size}" height="${size}" aria-hidden="true">
+      <defs><linearGradient id="dg${size}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="var(--hong)"/><stop offset="34%" stop-color="var(--hwang)"/>
+        <stop offset="67%" stop-color="var(--nok)"/><stop offset="100%" stop-color="var(--cheong)"/>
+      </linearGradient></defs>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line-2)" stroke-width="6"></circle>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="url(#dg${size})" stroke-width="6"
+        stroke-linecap="butt" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}"></circle>
     </svg><span class="t">${Math.round(p*100)}<small style="font-size:.66em">%</small></span></div>`;
 }
 
-/* ---------------- map ---------------- */
+/* ---------------- 처마 단청 머리띠 ----------------
+   사진을 쓸 수 없으므로 막새기와 처마선과 단청 색동을 직접 그린다.
+   띠의 색 구성이 답사지 유형을 나타낸다 — 장식이 아니라 표시다. */
+function eaveSvg(s){
+  const c = catOf(s), [a, b] = c.tone.map(v => `var(${v})`);
+  const W = 400, H = 56, tiles = [];
+  for(let x = 0; x <= W; x += 20){
+    tiles.push(`<path d="M${x} ${H} a10 10 0 0 1 20 0z" fill="${(x/20) % 2 ? a : b}"></path>`);
+  }
+  return `<div class="eave"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="${W}" height="${H}" fill="var(--card-2)"></rect>
+      <rect width="${W}" height="8" fill="${a}"></rect>
+      <rect y="8" width="${W}" height="2.5" fill="${b}"></rect>
+      <rect y="13" width="${W}" height="1.5" fill="${a}" opacity=".45"></rect>
+      <rect y="${H-13}" width="${W}" height="1.5" fill="${b}" opacity=".45"></rect>
+      ${tiles.join("")}
+    </svg>
+    <span class="lbl">${gwaeSvg(c.bars)}${esc(c.gwae)} · ${esc(P(c.ko, c.en))}</span>
+  </div>`;
+}
+
+/* ---------------- 낙관 스탬프 + 소리 ---------------- */
+let actx = null;
+function pluck(){
+  if(!st.sound) return;
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    // 5음 음계에서 두 음을 짧게 — 현을 튕긴 감촉을 배음 감쇠로 흉내낸다
+    [392.00, 587.33].forEach((f, k) => {
+      const t0 = actx.currentTime + k * 0.14;
+      [1, 2, 3.02, 4.15].forEach((m, i) => {
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.type = "sine"; o.frequency.value = f * m;
+        const peak = 0.20 / (i + 1.6);
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(peak, t0 + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.1 / (i * 0.7 + 1));
+        o.connect(g); g.connect(actx.destination);
+        o.start(t0); o.stop(t0 + 1.3);
+      });
+    });
+  }catch(e){ /* 소리를 못 내도 앱은 그대로 동작한다 */ }
+}
+let stampTimer = null;
+function showStamp(){
+  const el = document.getElementById("stamp");
+  const seal = P("답사완료", "DONE").split("");
+  el.innerHTML = `<div class="inner">
+      <div class="sl">${seal.map(ch => `<i>${esc(ch)}</i>`).join("")}</div>
+      <div class="cap2">${esc(L("sealDone"))}</div>
+    </div>`;
+  el.hidden = false; el.classList.remove("out");
+  try{ if(navigator.vibrate) navigator.vibrate([14, 40, 22]); }catch(e){}
+  pluck();
+  clearTimeout(stampTimer);
+  stampTimer = setTimeout(() => {
+    el.classList.add("out");
+    setTimeout(() => { el.hidden = true; el.classList.remove("out"); }, 320);
+  }, 1150);
+}
+
+/* ---------------- 지도 ---------------- */
 const MW = 800, MH = 900, LON0 = 126.925, LONS = 0.110, LAT1 = 37.600, LATS = 0.105;
-const px = l => (l - LON0) / LONS * MW;
-const py = l => (LAT1 - l) / LATS * MH * (MH / 960) + 0;
 function mapSvg(){
   const K = 900 / 960;
-  const X = l => px(l), Y = l => (LAT1 - l) / LATS * 960 * K;
+  const X = l => (l - LON0) / LONS * MW, Y = l => (LAT1 - l) / LATS * 960 * K;
   const cur = site(), sp = {x:X(START.lng), y:Y(START.lat)}, cp = {x:X(cur.lng), y:Y(cur.lat)};
+  const shown = s => st.filt === "all" || (st.filt === "done") === isFin(s);
   const pins = SITES.map(s => {
-    const x = X(s.lng), y = Y(s.lat), on = s.no === st.sel, dn = chkDone(s) === s.see.length;
-    return `<g class="pin${on ? " on" : ""}${dn && !on ? " done" : ""}" data-no="${s.no}" role="button" tabindex="0"
-      aria-label="${esc(s.no + ". " + P(s.ko, s.en))}">
+    const x = X(s.lng), y = Y(s.lat), on = s.no === st.sel, dn = isFin(s);
+    const cls = ["pin", on ? "on" : "", dn ? "done" : "", shown(s) ? "" : "dim"].filter(Boolean).join(" ");
+    return `<g class="${cls}" data-no="${s.no}" role="button" tabindex="0" aria-label="${esc(s.no + ". " + P(s.ko, s.en))}">
       <circle class="d" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${on ? 21 : 16}"></circle>
       <text x="${x.toFixed(1)}" y="${y.toFixed(1)}">${s.no}</text></g>`;
   }).join("");
   const right = cp.x > MW - 200;
   return `<svg class="mp" viewBox="0 0 ${MW} ${MH}" role="img"
     aria-label="${esc(P("서울 도심 답사지 개략 지도","Schematic map of field sites in central Seoul"))}">
-    <rect width="${MW}" height="${MH}" rx="14" fill="var(--card-2)"></rect>
-    <g fill="var(--line)" opacity=".85">
+    <rect width="${MW}" height="${MH}" rx="12" fill="var(--card-2)"></rect>
+    <g fill="var(--line-2)" opacity=".8">
       <ellipse cx="407" cy="40" rx="96" ry="44"></ellipse>
       <ellipse cx="240" cy="180" rx="72" ry="48"></ellipse>
       <ellipse cx="460" cy="419" rx="96" ry="55" transform="rotate(-8 460 419)"></ellipse>
       <ellipse cx="598" cy="169" rx="40" ry="53"></ellipse>
     </g>
     <path d="M 0,532 Q 130,563 255,600 Q 370,647 473,686 Q 640,675 800,660 L 800,743 Q 640,758 473,768 Q 370,730 255,682 Q 130,647 0,614 Z"
-      fill="var(--cheong)" opacity=".16"></path>
+      fill="var(--cheong)" opacity=".17"></path>
     <path d="M 407,38 C 330,75 275,124 240,180 C 272,246 320,302 366,344 C 400,384 430,409 460,419
              C 522,403 582,349 611,294 C 616,244 605,201 596,172 C 592,131 590,109 589,90
              C 522,54 460,39 407,38 Z" fill="none" stroke="var(--line-2)" stroke-width="2" stroke-dasharray="8 7"></path>
@@ -935,9 +1117,11 @@ function mapSvg(){
   </svg>`;
 }
 
-/* ---------------- views ---------------- */
+/* ---------------- 화면 ---------------- */
 function vMap(){
+  const done = SITES.filter(isFin).length;
   const lg = [["var(--hong)", L("lgSite")], ["var(--nok)", L("lgDone")], ["var(--cheong)", L("lgRiver")], ["var(--line-2)", L("lgHill")]];
+  const fl = [["all", L("fAll"), SITES.length, ""], ["todo", L("fTodo"), SITES.length - done, "g"], ["done", L("fDone"), done, "k"]];
   return `<section class="hero">
       <div class="kicker"><i class="flagdot"></i><span class="cap">${esc(L("kicker"))}</span></div>
       <h1>${esc(L("h1")).replace("\n","<br>")}</h1>
@@ -948,30 +1132,42 @@ function vMap(){
       <div class="stat"><b>${POINTS.length}</b><span>${esc(L("stPoints"))}</span></div>
       <div class="stat"><b>${TOT_CHK}</b><span>${esc(L("stChecks"))}</span></div>
     </div>
-    <div class="card mapcard">${mapSvg()}
-      <div class="maplg">${lg.map(([c,t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join("")}</div>
-      <p class="mapnote">${esc(L("mapNote"))}</p>
+    <div class="sect">
+      <div class="filters" id="mapFilt">${fl.map(([k,t,n,c]) =>
+        `<button type="button" class="fbtn ${c}" data-filt="${k}" aria-pressed="${st.filt === k}">${esc(t)}<span class="c">${n}</span></button>`).join("")}</div>
+      <div class="card mapcard">${mapSvg()}
+        <div class="maplg">${lg.map(([c,t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join("")}</div>
+        <p class="mapnote">${esc(L("mapNote"))}</p>
+      </div>
     </div>`;
 }
 
 function vList(){
-  return `<div class="slist">${SITES.map(s => {
-    const d = chkDone(s), full = d === s.see.length;
-    return `<button class="srow${full ? " done" : ""}" type="button" data-go="${s.no}">
-      <span class="no">${s.no}</span>
-      <span class="tx"><b>${esc(P(s.ko, s.en))}</b>${st.lang === "both" ? `<em>${esc(s.en)}</em>` : ""}</span>
-      <span class="rt"><span class="pg" style="${full ? "color:var(--nok)" : ""}">${d}/${s.see.length}</span>${svg(ICO.chev)}</span>
-    </button>`;
-  }).join("")}</div>
-  <p class="src-note" style="margin-top:18px">${esc(L("source"))}</p>`;
+  const cats = [["all", L("fAll"), SITES.length, null]].concat(
+    CAT_ORDER.map(k => [k, P(CATS[k].ko, CATS[k].en), SITES.filter(s => s.cat === k).length, CATS[k].bars]));
+  const rows = SITES.filter(s => st.cat === "all" || s.cat === st.cat);
+  return `<div class="filters" id="catFilt">${cats.map(([k,t,n,bars]) =>
+      `<button type="button" class="fbtn" data-cat="${k}" aria-pressed="${st.cat === k}">${bars ? gwaeSvg(bars) : ""}${esc(t)}<span class="c">${n}</span></button>`).join("")}</div>
+    <div class="slist">${rows.map(s => {
+      const d = chkDone(s), c = catOf(s);
+      return `<button class="srow${isFin(s) ? " done" : ""}" type="button" data-go="${s.no}">
+        <span class="no">${s.no}</span>
+        <span class="tx"><b>${esc(P(s.ko, s.en))}</b>
+          <span class="meta">${gwaeSvg(c.bars)}<em>${esc(st.lang === "both" ? s.en : P(c.ko, c.en))}</em></span></span>
+        <span class="rt"><span class="pg" style="${isFin(s) ? "color:var(--nok)" : ""}">${d}/${s.see.length}</span>${svg(ICO.chev)}</span>
+      </button>`;
+    }).join("")}</div>
+    <div class="lattice" style="margin-top:20px"></div>
+    <p class="src-note" style="margin-top:18px">${esc(L("source"))}</p>`;
 }
 
 function vSite(){
-  const s = site();
+  const s = site(), c = catOf(s), fin = isFin(s);
   const gq = encodeURIComponent(s.ko + " " + s.addr);
-  return `<section class="shd">
+  return `${eaveSvg(s)}
+    <section class="shd${fin ? " fin" : ""}">
       <div class="top"><span class="badge">${String(s.no).padStart(2,"0")}</span>
-        <span class="chip ${chkDone(s) === s.see.length ? "ok" : "en"}">${chkDone(s)} / ${s.see.length} ${esc(P("체크","checked"))}</span>
+        <span class="chip ${fin ? "ok" : "ko"}">${chkDone(s)} / ${s.see.length} ${esc(P("체크","checked"))}</span>
       </div>
       <h1>${esc(P(s.ko, s.en))}</h1>
       <div class="sub">${esc(st.lang === "en" ? s.ko : s.en)}</div>
@@ -982,24 +1178,26 @@ function vSite(){
       </div>
     </section>
 
+    <div class="lattice" style="margin-top:26px"></div>
+
     <div class="sect">
       <div class="sect-hd"><h2>${esc(L("see"))}</h2><span class="n">${chkDone(s)}/${s.see.length}</span></div>
-      <p class="src-note" style="margin:-4px 0 10px">${esc(L("seeHint"))}</p>
-      ${s.see.map((c,i) => {
+      <p class="src-note" style="margin:-4px 0 11px">${esc(L("seeHint"))}</p>
+      ${s.see.map((x,i) => {
         const id = s.no + "-" + i, on = !!st.checks[id];
         return `<button class="checkrow${on ? " on" : ""}" type="button" data-chk="${id}" aria-pressed="${on}">
-          <span class="bx">${svg(ICO.check)}</span><span class="cx">${bi(c.ko, c.en)}</span></button>`;
+          <span class="bx">${svg(ICO.check)}</span><span class="cx">${bi(x.ko, x.en)}</span></button>`;
       }).join("")}
     </div>
 
     <div class="sect">
       <div class="sect-hd"><h2>${esc(L("learn"))}</h2><span class="n">${s.learn.length}</span></div>
-      <p class="src-note" style="margin:-4px 0 10px">${esc(L("learnHint"))}</p>
+      <p class="src-note" style="margin:-4px 0 11px">${esc(L("learnHint"))}</p>
       ${s.learn.map((p,i) => {
-        const id = s.no + "-" + i;
-        return `<article class="pt"><div class="ph">
+        const id = s.no + "-" + i, kn = !!st.known[id];
+        return `<article class="pt${kn ? " done" : ""}"><div class="ph">
             <h3>${esc(st.lang === "en" ? p.ten : p.tko)}${st.lang === "both" ? `<span class="pe">${esc(p.ten)}</span>` : ""}</h3>
-            ${st.known[id] ? `<span class="chip ok">${esc(L("learned"))}</span>` : `<span class="cap">${String(i+1).padStart(2,"0")}</span>`}
+            ${kn ? `<span class="chip ok">${esc(L("learned"))}</span>` : `<span class="cap">${String(i+1).padStart(2,"0")}</span>`}
           </div><div class="pb">${bi(p.ko, p.en)}</div></article>`;
       }).join("")}
     </div>
@@ -1019,12 +1217,12 @@ function vSite(){
     </div>`;
 }
 
-let deck = [], di = 0, open = false;
+let deck = [], di = 0, opened = false;
 function buildDeck(){
   const pool = st.scope === "site" ? POINTS.filter(p => p.no === st.sel) : POINTS;
   deck = pool.slice();
   for(let i = deck.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
-  di = 0; open = false;
+  di = 0; opened = false;
 }
 function vDrill(){
   if(!deck.length) buildDeck();
@@ -1042,13 +1240,13 @@ function vDrill(){
         <span class="ct">${di + 1} / ${deck.length}</span></div>
       <div class="q">${esc(st.lang === "en" ? p.ten : p.tko)}</div>
       ${st.lang === "both" ? `<div class="qe">${esc(p.ten)}</div>` : ""}
-      ${open
+      ${opened
         ? `<div class="ans"><div class="cap" style="margin-bottom:9px">${esc(L("bothNote"))}</div>
             <span class="bi"><span class="r"><span class="tg">KO</span><span class="x">${esc(p.ko)}</span></span>
             <span class="r e"><span class="tg">EN</span><span class="x">${esc(p.en)}</span></span></span></div>`
         : `<p class="hint">${esc(L("think"))}</p>`}
     </div>
-    ${open
+    ${opened
       ? `<div class="acts two"><button class="bigbtn g" type="button" id="dGot">${esc(L("got"))}</button>
           <button class="bigbtn s" type="button" id="dAgain">${esc(L("again"))}</button></div>`
       : `<div class="acts"><button class="bigbtn p" type="button" id="dShow">${esc(L("show"))}</button>
@@ -1056,20 +1254,29 @@ function vDrill(){
 }
 
 function vMe(){
-  const c = nChecks(), k = nKnown(), tot = c + k, totAll = TOT_CHK + POINTS.length;
+  const c = nChecks(), k = nKnown(), tot = c + k, all = TOT_CHK + POINTS.length;
   return `<div class="bigring">
-      ${ring(tot, totAll, 78, "var(--hong)")}
+      ${ring(tot, all, 80)}
       <div class="tx"><b>${esc(L("overall"))}</b>
         <span>${esc(L("checksDone"))} ${c}/${TOT_CHK} · ${esc(L("pointsDone"))} ${k}/${POINTS.length}</span></div>
     </div>
 
     <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("byType"))}</h2></div>
+      <div class="card" style="padding:12px 15px">${CAT_ORDER.map(key => {
+        const ss = SITES.filter(s => s.cat === key), d = ss.filter(isFin).length, ct = CATS[key];
+        return `<div class="pbar"><span class="l" style="display:flex; align-items:center">${gwaeSvg(ct.bars)}</span>
+          ${danBar(d, ss.length)}<span class="v">${d}/${ss.length}</span></div>
+          <div class="cap" style="margin:-4px 0 6px 40px">${esc(ct.gwae)} · ${esc(P(ct.ko, ct.en))}</div>`;
+      }).join("")}</div>
+    </div>
+
+    <div class="sect">
       <div class="sect-hd"><h2>${esc(L("bySite"))}</h2></div>
-      <div class="card" style="padding:10px 14px">${SITES.map(s => {
-        const d = chkDone(s), f = d === s.see.length;
+      <div class="card" style="padding:10px 15px">${SITES.map(s => {
+        const d = chkDone(s);
         return `<div class="pbar"><span class="l">${String(s.no).padStart(2,"0")}</span>
-          <span class="tk"><span class="fl${f ? " full" : ""}" style="width:${d / s.see.length * 100}%"></span></span>
-          <span class="v">${d}/${s.see.length}</span></div>`;
+          ${danBar(d, s.see.length)}<span class="v">${d}/${s.see.length}</span></div>`;
       }).join("")}</div>
     </div>
 
@@ -1082,16 +1289,19 @@ function vMe(){
 
     <div class="sect">
       <div class="maker">
-        <div class="mark">DYHAN</div>
+        <span class="seal"><span>답사<br>완료</span></span>
+        <span class="mark">DYHAN</span>
         <div class="role">${esc(L("maker"))}</div>
-        <div class="ver">${esc(T.appName.ko)} v1.0</div>
+        <div class="ver">${esc(T.appName.ko)} v1.1</div>
       </div>
     </div>
 
     <div class="sect">
-      <div class="linkrow">${svg(ICO.phone)}<span>${esc(L("install"))}</span></div>
+      <button class="linkrow" type="button" id="soundBtn" aria-pressed="${st.sound}">${svg(ICO.bell)}<span>${esc(L("sound"))}</span><span class="sw"></span></button>
+      <p class="src-note" style="margin-top:8px">${esc(L("soundHow"))}</p>
+      <div class="linkrow" style="margin-top:14px">${svg(ICO.phone)}<span>${esc(L("install"))}</span></div>
       <p class="src-note" style="margin-top:8px">${esc(L("installHow"))}</p>
-      <a class="linkrow" href="${REPO}" target="_blank" rel="noopener" style="color:var(--ink)">
+      <a class="linkrow" href="${REPO}" target="_blank" rel="noopener" style="color:var(--ink); margin-top:14px">
         ${svg(ICO.code)}<span>${esc(L("repo"))}</span><span class="ar">${svg(ICO.chev)}</span></a>
     </div>
 
@@ -1101,7 +1311,43 @@ function vMe(){
     </div>`;
 }
 
-/* ---------------- render ---------------- */
+/* ---------------- 바텀 시트 ---------------- */
+function openSheet(no){
+  st.sel = no; save();
+  const s = site(), c = catOf(s), d = chkDone(s);
+  document.getElementById("sheet").innerHTML = `<div class="grip"></div>
+    <div class="sh-top"><span class="chip ko" style="font-size:11px">${String(s.no).padStart(2,"0")}</span>
+      <span class="chip ${isFin(s) ? "ok" : "en"}" style="display:inline-flex; gap:5px">${gwaeSvg(c.bars)}${esc(P(c.ko, c.en))}</span></div>
+    <h3>${esc(P(s.ko, s.en))}</h3>
+    <div class="sh-en">${esc(st.lang === "en" ? s.ko : s.en)}</div>
+    <p class="sh-ad">${esc(P(s.addr, s.addrEn))}</p>
+    <div class="sh-pg">${danBar(d, s.see.length)}<span class="v">${d}/${s.see.length} ${esc(P("체크","checked"))}</span></div>
+    <div class="sh-acts">
+      <a class="bigbtn s" style="display:flex; align-items:center; justify-content:center"
+         href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.ko + " " + s.addr)}" target="_blank" rel="noopener">${esc(L("gmap"))}</a>
+      <button class="bigbtn p" type="button" id="sheetGo">${esc(L("detail"))}</button>
+    </div>`;
+  const w = document.getElementById("sheetWrap");
+  w.hidden = false;
+  requestAnimationFrame(() => w.classList.add("in"));
+  document.getElementById("sheetGo").addEventListener("click", () => { closeSheet(); go("site"); });
+  refreshMapSvg();
+}
+function closeSheet(){
+  const w = document.getElementById("sheetWrap");
+  w.classList.remove("in");
+  setTimeout(() => { w.hidden = true; }, 240);
+}
+function refreshMapSvg(){
+  const old = document.querySelector(".mapcard svg.mp");
+  if(!old) return;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = mapSvg();
+  old.replaceWith(tmp.firstElementChild);
+  wireMap();
+}
+
+/* ---------------- 렌더 ---------------- */
 function titleFor(){
   if(st.view === "site") return `${esc(P(site().ko, site().en))}<small>${String(site().no).padStart(2,"0")}</small>`;
   if(st.view === "list") return esc(L("list"));
@@ -1115,40 +1361,47 @@ function render(){
   document.querySelectorAll("#langPill button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === st.lang));
   const tabFor = st.view === "site" ? "list" : st.view;
   document.querySelectorAll("#tabbar button").forEach(b => b.setAttribute("aria-current", b.dataset.view === tabFor));
-
-  const v = document.getElementById("view");
-  v.innerHTML = st.view === "list" ? vList() : st.view === "site" ? vSite()
+  document.getElementById("view").innerHTML =
+    st.view === "list" ? vList() : st.view === "site" ? vSite()
     : st.view === "drill" ? vDrill() : st.view === "me" ? vMe() : vMap();
   wire();
 }
-function go(view, keepScroll){
+function go(view, keep){
   st.view = view; save(); render();
-  if(!keepScroll) window.scrollTo({top:0, behavior:"instant"});
+  if(!keep) window.scrollTo({top:0, behavior:"instant"});
+}
+function wireMap(){
+  document.querySelectorAll(".pin").forEach(g => {
+    const no = +g.dataset.no, act = () => openSheet(no);
+    g.addEventListener("click", act);
+    g.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); act(); } });
+  });
 }
 function wire(){
-  document.querySelectorAll(".pin").forEach(g => {
-    const no = +g.dataset.no;
-    const openSite = () => { st.sel = no; go("site"); };
-    g.addEventListener("click", openSite);
-    g.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openSite(); } });
-  });
+  wireMap();
+  document.querySelectorAll("#mapFilt button").forEach(b =>
+    b.addEventListener("click", () => { st.filt = b.dataset.filt; save(); render(); }));
+  document.querySelectorAll("#catFilt button").forEach(b =>
+    b.addEventListener("click", () => { st.cat = b.dataset.cat; save(); render(); }));
   document.querySelectorAll("[data-go]").forEach(b =>
     b.addEventListener("click", () => { st.sel = +b.dataset.go; go("site"); }));
   document.querySelectorAll("[data-chk]").forEach(b =>
     b.addEventListener("click", () => {
-      const id = b.dataset.chk;
+      const id = b.dataset.chk, s = site(), was = isFin(s);
       if(st.checks[id]) delete st.checks[id]; else st.checks[id] = true;
       save();
       const y = window.scrollY; render(); window.scrollTo({top:y, behavior:"instant"});
+      if(!was && isFin(s)) showStamp();
     }));
   const on = (id, fn) => { const el = document.getElementById(id); if(el) el.addEventListener("click", fn); };
-  on("dShow", () => { open = true; render(); });
-  on("dNext", () => { di = (di + 1) % deck.length; open = false; render(); });
+  on("dShow", () => { opened = true; render(); });
+  on("dNext", () => { di = (di + 1) % deck.length; opened = false; render(); });
   on("dShuffle", () => { buildDeck(); render(); });
-  on("dGot", () => { const p = deck[di]; st.known[p.id] = true; save(); di = (di + 1) % deck.length; open = false; render(); });
-  on("dAgain", () => { const p = deck[di]; delete st.known[p.id]; save(); di = (di + 1) % deck.length; open = false; render(); });
+  on("dGot", () => { st.known[deck[di].id] = true; save(); di = (di + 1) % deck.length; opened = false; render(); });
+  on("dAgain", () => { delete st.known[deck[di].id]; save(); di = (di + 1) % deck.length; opened = false; render(); });
   document.querySelectorAll("#scopeSeg button").forEach(b =>
     b.addEventListener("click", () => { st.scope = b.dataset.scope; save(); buildDeck(); render(); }));
+  on("soundBtn", () => { st.sound = !st.sound; save(); render(); if(st.sound) pluck(); });
   on("resetBtn", () => { if(confirm(L("resetAsk"))){ st.checks = {}; st.known = {}; save(); render(); } });
 }
 
@@ -1157,8 +1410,9 @@ document.querySelectorAll("#langPill button").forEach(b =>
 document.querySelectorAll("#tabbar button").forEach(b =>
   b.addEventListener("click", () => { if(b.dataset.view === "drill") buildDeck(); go(b.dataset.view); }));
 document.getElementById("backBtn").addEventListener("click", () => go("list"));
+document.getElementById("sheetBg").addEventListener("click", closeSheet);
+document.addEventListener("keydown", e => { if(e.key === "Escape" && !document.getElementById("sheetWrap").hidden) closeSheet(); });
 
-if(st.view === "site" && !site()) st.view = "map";
 buildDeck();
 render();
 </script>
