@@ -27,6 +27,9 @@ jobs:
 
       - name: Pages 설정
         uses: actions/configure-pages@v5
+        with:
+          # Settings를 손대지 않아도 워크플로가 Pages를 켠다
+          enablement: true
 
       - name: 아티팩트 업로드
         uses: actions/upload-pages-artifact@v3
