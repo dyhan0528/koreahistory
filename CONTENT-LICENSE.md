@@ -29,7 +29,7 @@ https://creativecommons.org/licenses/by-nc/4.0/deed.ko
 ## 출처 표기 예
 
 ```
-출처: 한국탐방 해설사 (DYHAN) — https://github.com/dyhan0528/korea-heritage-guide
+출처: 한국탐방 해설사 (DYHAN) — https://github.com/dyhan0528/koreahistory
 CC BY-NC 4.0
 ```
 
