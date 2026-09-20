@@ -25,10 +25,8 @@ function colorAt(fx, fy){
     const ly = dx * Math.sin(a) + dy * Math.cos(a);
     if(inBar(lx, ly, g.bits)) return HEUK;
   }
-  // 태극 — 분할축을 대각선 각도만큼 돌린 좌표에서 판정한다 (v는 위쪽이 양)
-  const a = rad(-G.DIAG), dx = fx - 150, dy = fy - 100;
-  const u = dx * Math.cos(a) - dy * Math.sin(a);
-  const v = -(dx * Math.sin(a) + dy * Math.cos(a));
+  // 태극 — 분할축은 수평이다. v는 위쪽이 양수.
+  const u = fx - 150, v = -(fy - 100);
   if(u*u + v*v <= G.R*G.R){
     const h = G.R / 2;
     const inL = (u + h)*(u + h) + v*v < h*h;

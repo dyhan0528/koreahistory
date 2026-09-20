@@ -27,7 +27,7 @@ const h = n(G.R / 2);
 const svg =
 `<svg viewBox="0 0 300 200" role="img" aria-label="태극기">` +
 `<rect width="300" height="200" fill="#FFFFFF"/>` +
-`<g transform="translate(150 100) rotate(${n(G.DIAG)})">` +
+`<g transform="translate(150 100)">` +   // 태극 분할축은 수평
 `<circle r="${n(G.R)}" fill="#0B4DA2"/>` +
 `<path d="M ${n(-G.R)},0 A ${n(G.R)},${n(G.R)} 0 0 1 ${n(G.R)},0 A ${h},${h} 0 0 1 0,0 A ${h},${h} 0 0 0 ${n(-G.R)},0 Z" fill="#CD2E3A"/>` +
 `</g>` +
