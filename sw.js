@@ -2,7 +2,7 @@
    앱 셸은 설치 시 미리 담아 두고, 웹폰트는 처음 받은 뒤 캐시에서 쓴다.
    답사지에서 지하철 신호가 약해도 열리는 것이 목적이다. */
 
-const VERSION = "v1.2.0";
+const VERSION = "v1.3.0";
 const SHELL = "khg-shell-" + VERSION;
 const FONTS = "khg-fonts-" + VERSION;
 

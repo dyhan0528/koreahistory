@@ -1,5 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="태극">
   <rect width="100" height="100" fill="#FFFFFF"/>
-  <circle cx="50" cy="50" r="31" fill="#0B4DA2"/>
-  <path d="M 19,50 A 31,31 0 0 1 81,50 A 15.5,15.5 0 0 1 50,50 A 15.5,15.5 0 0 0 19,50 Z" fill="#CD2E3A"/>
+  <g transform="translate(50 50) rotate(33.69)">
+    <circle r="31" fill="#0B4DA2"/>
+    <path d="M -31,0 A 31,31 0 0 1 31,0 A 15.5,15.5 0 0 1 0,0 A 15.5,15.5 0 0 0 -31,0 Z" fill="#CD2E3A"/>
+  </g>
 </svg>
