@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="청소년 문화유산해설사 과정 답사 앱. 서울 문화유산 12곳을 지도·체크리스트·한영 해설로 익힙니다. 제작 DYHAN.">
+<meta name="author" content="DYHAN">
+<meta name="theme-color" content="#F3F4F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1014" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="한국탐방 해설사">
+<meta property="og:description" content="서울 문화유산 12곳, 한국어와 영어로 함께 익히는 청소년 해설사 답사 앱.">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="한국탐방 해설사">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+/* 기본 리셋 — 안전영역과 색 구성만 잡고, 나머지는 앱 스타일이 담당한다 */
+:root{
+  color-scheme: light dark;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none !important}
+</style>
+<title>한국탐방 해설사</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&family=Archivo:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  /* 오방색 기반 · 태극 홍청 */
+  --hong:#CD2E3A;        /* 적 — 주 액션·선택 */
+  --hong-ink:#A4222C;
+  --hong-tint:#FCEBEC;
+  --cheong:#0B4DA2;      /* 청 — 영어·보조 */
+  --cheong-tint:#E8EFF9;
+  --hwang:#B07716;       /* 황 — 추정 표시 */
+  --hwang-tint:#FBF0DC;
+  --nok:#1F7A5A;         /* 녹 — 완료 */
+  --nok-tint:#E4F2EC;
+
+  --bg:#F3F4F6;
+  --card:#FFFFFF;
+  --card-2:#F8F9FB;
+  --ink:#14161B;
+  --ink-2:#585F6E;
+  --ink-3:#8C93A3;
+  --line:#E5E8ED;
+  --line-2:#D3D8E0;
+  --bar:rgba(243,244,246,.82);
+  --sh-1:0 1px 2px rgba(20,22,27,.05);
+  --sh-2:0 2px 6px rgba(20,22,27,.06), 0 12px 28px -14px rgba(20,22,27,.18);
+  --sh-3:0 -1px 0 var(--line), 0 -12px 28px -20px rgba(20,22,27,.3);
+  --ui:"Gothic A1","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+  --lat:"Archivo",system-ui,sans-serif;
+  --r-s:10px; --r-m:14px; --r-l:20px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --hong:#FF5F68; --hong-ink:#FF8A90; --hong-tint:#31171A;
+    --cheong:#71A8FF; --cheong-tint:#14213A;
+    --hwang:#E8B860; --hwang-tint:#332812;
+    --nok:#4FC49B; --nok-tint:#123328;
+    --bg:#0E1014; --card:#171A20; --card-2:#1D2128;
+    --ink:#EDEFF4; --ink-2:#A3AAB9; --ink-3:#757C8B;
+    --line:#252A33; --line-2:#333A46;
+    --bar:rgba(14,16,20,.82);
+    --sh-1:0 1px 2px rgba(0,0,0,.4);
+    --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 30px -16px rgba(0,0,0,.7);
+    --sh-3:0 -1px 0 var(--line), 0 -14px 30px -22px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --hong:#FF5F68; --hong-ink:#FF8A90; --hong-tint:#31171A;
+  --cheong:#71A8FF; --cheong-tint:#14213A;
+  --hwang:#E8B860; --hwang-tint:#332812;
+  --nok:#4FC49B; --nok-tint:#123328;
+  --bg:#0E1014; --card:#171A20; --card-2:#1D2128;
+  --ink:#EDEFF4; --ink-2:#A3AAB9; --ink-3:#757C8B;
+  --line:#252A33; --line-2:#333A46;
+  --bar:rgba(14,16,20,.82);
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 6px rgba(0,0,0,.35), 0 14px 30px -16px rgba(0,0,0,.7);
+  --sh-3:0 -1px 0 var(--line), 0 -14px 30px -22px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--ui); font-size:15px; line-height:1.6; font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0; font-weight:900; letter-spacing:-.02em; line-height:1.25; text-wrap:balance}
+p{margin:0}
+button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
+a{color:var(--cheong); text-decoration:none}
+:focus-visible{outline:2px solid var(--hong); outline-offset:2px; border-radius:6px}
+.num{font-family:var(--lat); font-variant-numeric:tabular-nums}
+.cap{font-family:var(--lat); font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+
+/* ===== shell ===== */
+.app{max-width:520px; margin:0 auto; min-height:100%; position:relative; background:var(--bg)}
+@media (min-width:640px){
+  body{background:var(--card-2)}
+  .app{box-shadow:0 0 0 1px var(--line); background:var(--bg)}
+}
+
+.appbar{
+  position:sticky; top:env(safe-area-inset-top, 0px); z-index:30;
+  background:var(--bar); backdrop-filter:blur(14px) saturate(1.6);
+  border-bottom:1px solid var(--line);
+  display:flex; align-items:center; gap:10px; padding:10px 14px; min-height:54px;
+}
+.appbar .back{width:34px; height:34px; display:grid; place-items:center; margin-left:-6px; border-radius:50%}
+.appbar .back:active{background:var(--line)}
+.appbar .ttl{font-weight:900; font-size:17px; letter-spacing:-.02em; margin-right:auto; display:flex; align-items:baseline; gap:7px; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.appbar .ttl small{font-family:var(--lat); font-weight:600; font-size:11px; color:var(--ink-3); letter-spacing:.02em}
+
+.langpill{display:flex; background:var(--card); border:1px solid var(--line-2); border-radius:999px; padding:2px; gap:2px; flex:none}
+.langpill button{
+  font-family:var(--lat); font-size:11.5px; font-weight:600; letter-spacing:.02em;
+  padding:5px 10px; border-radius:999px; color:var(--ink-2); white-space:nowrap;
+}
+.langpill button[aria-pressed="true"]{background:var(--hong); color:#fff}
+
+.view{padding:18px 16px 112px}
+@media (prefers-reduced-motion: no-preference){
+  .view{animation:rise .26s cubic-bezier(.22,.8,.3,1)}
+  @keyframes rise{from{opacity:.4; transform:translateY(6px)} to{opacity:1; transform:none}}
+}
+
+/* ===== bottom tabs ===== */
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:40;
+  background:var(--bar); backdrop-filter:blur(14px) saturate(1.6);
+  box-shadow:var(--sh-3);
+  padding:6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
+}
+.tabbar-in{max-width:520px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr)}
+.tabbar button{display:grid; justify-items:center; gap:3px; padding:6px 0 4px; color:var(--ink-3)}
+.tabbar button svg{width:23px; height:23px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.tabbar button span{font-size:10.5px; font-weight:700; letter-spacing:-.01em}
+.tabbar button[aria-current="true"]{color:var(--hong)}
+.tabbar button[aria-current="true"] svg{stroke-width:2.1}
+
+/* ===== bits ===== */
+.card{background:var(--card); border-radius:var(--r-l); box-shadow:var(--sh-1)}
+.sect{margin-top:26px}
+.sect-hd{display:flex; align-items:center; gap:9px; margin-bottom:11px; padding:0 2px}
+.sect-hd h2{font-size:15.5px; font-weight:900}
+.sect-hd .n{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3); margin-left:auto}
+
+.chip{
+  display:inline-flex; align-items:center; gap:4px; font-family:var(--lat);
+  font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase;
+  padding:3px 7px; border-radius:6px; white-space:nowrap;
+}
+.chip.ok{background:var(--nok-tint); color:var(--nok)}
+.chip.est{background:var(--hwang-tint); color:var(--hwang)}
+.chip.en{background:var(--cheong-tint); color:var(--cheong)}
+
+.ring{--p:0; width:44px; height:44px; flex:none; position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .t{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--lat); font-size:11px; font-weight:700}
+
+/* bilingual */
+.bi{display:grid; gap:7px}
+.bi .r{display:grid; grid-template-columns:20px 1fr; gap:8px; align-items:start}
+.bi .tg{font-family:var(--lat); font-size:9px; font-weight:700; letter-spacing:.08em; color:var(--ink-3); padding-top:4px}
+.bi .r.e .x{color:var(--cheong)}
+.bi .x{line-height:1.62}
+
+/* ===== home / map ===== */
+.hero{padding:2px 2px 4px}
+.hero .kicker{display:flex; align-items:center; gap:7px}
+.hero .flagdot{width:11px; height:11px; border-radius:50%; background:var(--hong); box-shadow:0 0 0 3px var(--hong-tint); flex:none}
+.hero h1{font-size:clamp(24px,7vw,30px); margin-top:12px}
+.hero p{margin-top:9px; color:var(--ink-2); font-size:14px}
+.statrow{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:16px}
+.stat{background:var(--card); border-radius:var(--r-m); padding:12px 13px; box-shadow:var(--sh-1)}
+.stat b{display:block; font-family:var(--lat); font-size:21px; font-weight:700; letter-spacing:-.02em; line-height:1.1}
+.stat span{display:block; font-size:11px; color:var(--ink-3); margin-top:3px; font-weight:500}
+
+.mapcard{margin-top:18px; padding:10px; overflow:hidden}
+.mapcard svg.mp{display:block; width:100%; height:auto}
+.maplg{display:flex; flex-wrap:wrap; gap:5px 13px; padding:8px 6px 4px}
+.maplg span{display:inline-flex; align-items:center; gap:5px; font-family:var(--lat); font-size:10px; font-weight:600; color:var(--ink-3); letter-spacing:.05em}
+.maplg i{width:8px; height:8px; border-radius:50%; flex:none}
+.mapnote{padding:2px 6px 4px; font-size:11.5px; color:var(--ink-3); line-height:1.5}
+
+.pin{cursor:pointer}
+.pin .d{fill:var(--card); stroke:var(--hong); stroke-width:2.4}
+.pin text{font-family:var(--lat); font-size:19px; font-weight:700; fill:var(--hong); text-anchor:middle; dominant-baseline:central; pointer-events:none}
+.pin.on .d{fill:var(--hong); stroke:var(--card); stroke-width:3.6}
+.pin.on text{fill:#fff}
+.pin.done .d{stroke:var(--nok)}
+.pin.done text{fill:var(--nok)}
+.pinlab{font-family:var(--ui); font-size:17px; font-weight:700; fill:var(--ink); paint-order:stroke; stroke:var(--card); stroke-width:6px; stroke-linejoin:round; pointer-events:none}
+.geo{font-family:var(--lat); font-size:15px; font-weight:600; letter-spacing:.14em; fill:var(--ink-3); pointer-events:none}
+
+/* ===== list ===== */
+.slist{display:grid; gap:9px}
+.srow{
+  display:grid; grid-template-columns:40px 1fr auto; align-items:center; gap:12px;
+  background:var(--card); border-radius:var(--r-m); padding:13px 14px; box-shadow:var(--sh-1);
+  text-align:left; width:100%; min-height:62px;
+}
+.srow:active{transform:scale(.988)}
+.srow .no{
+  font-family:var(--lat); font-size:13px; font-weight:700; color:var(--hong);
+  background:var(--hong-tint); border-radius:9px; width:40px; height:40px; display:grid; place-items:center;
+}
+.srow.done .no{color:var(--nok); background:var(--nok-tint)}
+.srow .tx{min-width:0}
+.srow .tx b{display:block; font-size:15.5px; font-weight:700; letter-spacing:-.01em}
+.srow .tx em{display:block; font-style:normal; font-family:var(--lat); font-size:11.5px; font-weight:500; color:var(--ink-3); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.srow .rt{display:flex; align-items:center; gap:8px; color:var(--ink-3)}
+.srow .rt .pg{font-family:var(--lat); font-size:11px; font-weight:600}
+.srow .rt svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2}
+
+/* ===== site detail ===== */
+.shd{padding:2px 2px 0}
+.shd .top{display:flex; align-items:center; gap:9px}
+.shd .badge{font-family:var(--lat); font-size:11px; font-weight:700; letter-spacing:.06em; color:#fff; background:var(--hong); padding:4px 9px; border-radius:7px}
+.shd h1{font-size:clamp(23px,6.5vw,29px); margin-top:12px}
+.shd .sub{font-family:var(--lat); font-size:13.5px; font-weight:500; color:var(--cheong); margin-top:4px}
+.shd .addr{margin-top:12px; color:var(--ink-2); font-size:13.5px}
+.gobtns{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px}
+.gobtn{
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  background:var(--card); border:1px solid var(--line-2); border-radius:var(--r-m);
+  padding:11px; font-size:13.5px; font-weight:700; color:var(--ink);
+}
+.gobtn svg{width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round}
+.gobtn:active{background:var(--card-2)}
+
+.checkrow{
+  display:grid; grid-template-columns:24px 1fr; gap:12px; align-items:start; width:100%; text-align:left;
+  background:var(--card); border-radius:var(--r-m); padding:14px; box-shadow:var(--sh-1); min-height:56px;
+}
+.checkrow + .checkrow{margin-top:8px}
+.checkrow .bx{
+  width:23px; height:23px; border-radius:7px; border:2px solid var(--line-2);
+  display:grid; place-items:center; margin-top:1px; flex:none; transition:background .16s, border-color .16s;
+}
+.checkrow .bx svg{width:13px; height:13px; stroke:#fff; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:0}
+.checkrow.on .bx{background:var(--nok); border-color:var(--nok)}
+.checkrow.on .bx svg{opacity:1}
+.checkrow.on .cx{color:var(--ink-3)}
+.cx{font-size:14px}
+
+.pt{background:var(--card); border-radius:var(--r-m); padding:15px; box-shadow:var(--sh-1)}
+.pt + .pt{margin-top:9px}
+.pt .ph{display:flex; align-items:flex-start; gap:9px}
+.pt h3{font-size:15.5px; font-weight:900; flex:1}
+.pt h3 .pe{display:block; font-family:var(--lat); font-size:12.5px; font-weight:600; color:var(--cheong); margin-top:3px; letter-spacing:0}
+.pt .pb{margin-top:10px; font-size:14px}
+
+.info{background:var(--card); border-radius:var(--r-m); padding:15px; box-shadow:var(--sh-1); font-size:14px}
+.info .lb{margin-bottom:8px}
+
+.frow{display:grid; grid-template-columns:1fr auto; gap:4px 12px; padding:12px 14px; border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:0}
+.frow b{font-size:14px; font-weight:700}
+.frow .ad{font-size:12px; color:var(--ink-3); grid-column:1/-1}
+.frow .tg{font-size:11.5px; color:var(--ink-2); text-align:right; white-space:nowrap}
+.flist{background:var(--card); border-radius:var(--r-m); box-shadow:var(--sh-1); overflow:hidden}
+
+.note{font-size:12.5px; color:var(--ink-2); background:var(--hwang-tint); border-radius:var(--r-s); padding:10px 12px; margin-bottom:11px; line-height:1.55}
+
+/* ===== drill ===== */
+.qcard{background:var(--card); border-radius:var(--r-l); padding:22px 20px; box-shadow:var(--sh-2); min-height:230px; display:flex; flex-direction:column}
+.qcard .src{display:flex; align-items:center; gap:8px; margin-bottom:14px}
+.qcard .src .s1{font-family:var(--lat); font-size:11px; font-weight:700; color:var(--hong)}
+.qcard .src .s2{font-size:11.5px; color:var(--ink-3); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.qcard .src .ct{margin-left:auto; font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3)}
+.qcard .q{font-size:clamp(20px,5.6vw,25px); font-weight:900; letter-spacing:-.02em; line-height:1.3}
+.qcard .qe{font-family:var(--lat); font-size:14px; font-weight:600; color:var(--cheong); margin-top:7px}
+.qcard .hint{margin-top:auto; padding-top:18px; font-size:12.5px; color:var(--ink-3)}
+.qcard .ans{margin-top:16px; padding-top:16px; border-top:1px dashed var(--line-2); font-size:14px}
+.acts{display:grid; gap:8px; margin-top:14px}
+.acts.two{grid-template-columns:1fr 1fr}
+.bigbtn{border-radius:var(--r-m); padding:14px; font-size:15px; font-weight:800; letter-spacing:-.01em; min-height:50px}
+.bigbtn.p{background:var(--hong); color:#fff}
+.bigbtn.p:active{background:var(--hong-ink)}
+.bigbtn.s{background:var(--card); border:1px solid var(--line-2); color:var(--ink)}
+.bigbtn.s:active{background:var(--card-2)}
+.bigbtn.g{background:var(--nok); color:#fff}
+.scopeseg{display:flex; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:3px; gap:3px; margin-bottom:14px}
+.scopeseg button{flex:1; font-size:12.5px; font-weight:700; padding:7px; border-radius:999px; color:var(--ink-2)}
+.scopeseg button[aria-pressed="true"]{background:var(--ink); color:var(--card)}
+
+/* ===== me ===== */
+.bigring{display:flex; gap:18px; align-items:center; background:var(--card); border-radius:var(--r-l); padding:18px; box-shadow:var(--sh-1)}
+.bigring .ring{width:78px; height:78px}
+.bigring .ring .t{font-size:17px}
+.bigring .tx b{display:block; font-size:16px; font-weight:900}
+.bigring .tx span{display:block; font-size:12.5px; color:var(--ink-2); margin-top:3px}
+.pbar{display:grid; grid-template-columns:30px 1fr 42px; gap:10px; align-items:center; padding:7px 0}
+.pbar .l{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3)}
+.pbar .tk{height:6px; background:var(--card-2); border-radius:99px; overflow:hidden}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pbar .tk{background:#262A33}}
+:root[data-theme="dark"] .pbar .tk{background:#262A33}
+.pbar .fl{height:100%; background:var(--hong); border-radius:99px; transition:width .35s}
+.pbar .fl.full{background:var(--nok)}
+.pbar .v{font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-3); text-align:right}
+
+.maker{background:var(--card); border-radius:var(--r-l); padding:20px; box-shadow:var(--sh-1); text-align:center}
+.maker .mark{
+  font-family:var(--lat); font-size:27px; font-weight:700; letter-spacing:.2em;
+  display:inline-block; padding:0 0 0 .2em; color:var(--ink);
+}
+.maker .role{font-size:12px; color:var(--ink-3); margin-top:6px; font-weight:500}
+.maker .ver{display:inline-block; margin-top:12px; font-family:var(--lat); font-size:11px; font-weight:600; color:var(--ink-2); background:var(--card-2); padding:4px 10px; border-radius:999px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .maker .ver{background:#242933}}
+:root[data-theme="dark"] .maker .ver{background:#242933}
+
+.hist{position:relative; padding-left:20px}
+.hist::before{content:""; position:absolute; left:4px; top:8px; bottom:8px; width:2px; background:var(--line)}
+.hitem{position:relative; padding:9px 0}
+.hitem::before{content:""; position:absolute; left:-20px; top:16px; width:10px; height:10px; border-radius:50%; background:var(--card); border:2px solid var(--line-2)}
+.hitem.now::before{background:var(--hong); border-color:var(--hong)}
+.hitem .hv{font-family:var(--lat); font-size:12px; font-weight:700; color:var(--hong)}
+.hitem .hd{font-family:var(--lat); font-size:10.5px; font-weight:600; color:var(--ink-3); margin-left:7px}
+.hitem .hb{font-size:13.5px; color:var(--ink-2); margin-top:3px}
+
+.linkrow{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:var(--card); border-radius:var(--r-m); padding:14px; box-shadow:var(--sh-1); font-size:14px; font-weight:600}
+.linkrow + .linkrow{margin-top:8px}
+.linkrow svg{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; color:var(--ink-3)}
+.linkrow .ar{margin-left:auto; color:var(--ink-3)}
+.linkrow.warn{color:var(--hong)}
+.src-note{font-size:12px; color:var(--ink-3); line-height:1.6; padding:0 4px}
+
+@media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="appbar">
+    <button class="back" id="backBtn" type="button" aria-label="뒤로" hidden>
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="ttl" id="barTitle"></div>
+    <div class="langpill" role="group" id="langPill" aria-label="언어 / Language">
+      <button type="button" data-lang="ko" aria-pressed="true">한</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="both" aria-pressed="false">한·EN</button>
+    </div>
+  </header>
+
+  <main class="view" id="view"></main>
+
+  <nav class="tabbar" aria-label="주요 화면">
+    <div class="tabbar-in" id="tabbar">
+      <button type="button" data-view="map" aria-current="true">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>지도</span>
+      </button>
+      <button type="button" data-view="list" aria-current="false">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>답사지</span>
+      </button>
+      <button type="button" data-view="drill" aria-current="false">
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="7" width="12.5" height="13.5" rx="2.5"/><path d="M8 3.5h9.5A2.5 2.5 0 0 1 20 6v10"/></svg><span>연습</span>
+      </button>
+      <button type="button" data-view="me" aria-current="false">
+        <svg viewBox="0 0 24 24"><path d="M5 19.5V12M12 19.5V4.5M19 19.5v-5.5"/></svg><span>내 진도</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script>
+/* ============================================================
+   한국탐방 해설사 — 청소년 문화유산해설사 답사 앱
+   출처: 「청소년 문화유산해설사 준비 여행일지 (반포 출발)」 2026-09-20
+   conf 표기: 검색 확인 = fact / 추정 = est
+   ============================================================ */
+const SITES = [
+{
+  no:1, lat:37.5820, lng:126.9793,
+  ko:"국립민속박물관", en:"National Folk Museum of Korea",
+  addr:"서울 종로구 삼청로 37 (경복궁 내)",
+  addrEn:"37 Samcheong-ro, Jongno-gu (inside Gyeongbokgung)",
+  route:{ko:"고속터미널역(3·7·9호선)에서 3호선 승차 → 경복궁역 하차, 5번 출구 도보 약 10분. 대안: 안국역(3호선) 1번 출구 도보 약 15분.",
+         en:"From Gosu Terminal Stn (Lines 3/7/9) take Line 3 → Gyeongbokgung Stn, Exit 5, about a 10-minute walk. Alternative: Anguk Stn (Line 3), Exit 1, about 15 minutes on foot."},
+  see:[
+    {ko:"상설전시관 3개관(한민족 생활사 · 한국인의 일상 · 한국인의 일생) 동선도 확인",
+     en:"Check the route map for the three permanent galleries: Korean Life History, Korean Daily Life, Korean Life Cycle"},
+    {ko:"야외 전시 ‘추억의 거리’(1960~1980년대 거리 재현) 구간 사진 기록",
+     en:"Photograph the outdoor “Street of Memories,” a recreated 1960s–80s streetscape"},
+    {ko:"외국인 대상 다국어(영·중·일) 안내판 배치 위치 확인",
+     en:"Note where the multilingual signage for foreign visitors (EN/CN/JP) is placed"}
+  ],
+  learn:[
+    {tko:"세시풍속과 24절기", ten:"Seasonal customs and the 24 solar terms",
+     ko:"한국의 세시풍속은 음력을 기준으로 한 24절기와 설날·추석·단오·한식 등 명절로 구성되며, 절기마다 차례·성묘 등 고유 풍습이 있다.",
+     en:"Korea's seasonal customs are built on the 24 solar terms of the lunar calendar together with holidays such as Seollal, Chuseok, Dano and Hansik, and each term carries its own practices — charye ancestral offerings, seongmyo grave visits, and so on."},
+    {tko:"전통 혼례·상례·제례", ten:"Traditional wedding, funeral and ancestral rites",
+     ko:"전통 혼례는 사주단자 교환 → 초례(혼례식) → 폐백 순으로 진행되며, 상례·제례는 유교적 효 사상에 따라 조상을 기리는 절차로 구성된다.",
+     en:"A traditional wedding runs from the exchange of the saju danja horoscope letter to the chorye ceremony and then pyebaek, while funeral and ancestral rites are sequences for honouring ancestors grounded in Confucian filial piety."},
+    {tko:"온돌·한옥 구조", ten:"Ondol heating and hanok structure",
+     ko:"온돌은 아궁이에서 불을 때 방바닥을 데우는 한국 고유의 난방 방식이며, 한옥은 마루(대청)와 온돌방을 함께 배치해 여름·겨울에 모두 대응하도록 설계되었다.",
+     en:"Ondol is Korea's own underfloor heating, fired from an agungi furnace to warm the floor of the room; a hanok sets an open wooden maru hall beside ondol rooms so the same house answers both summer and winter."}
+  ],
+  food:[
+    {n:"유소바 안국역점", a:"종로구 창덕궁1길 32", ko:"소바·우동", en:"Soba and udon"},
+    {n:"온미관 안국", a:"종로구 북촌로2길 5-4", ko:"보쌈 등 한식", en:"Korean, incl. bossam"},
+    {n:"신라제면 안국", a:"종로구 계동길 19-6 1층", ko:"해물칼국수·해물파전", en:"Seafood kalguksu"},
+    {n:"안국약방", a:"종로구 북촌로 4 1층", ko:"한식 고기", en:"Korean grilled meat"},
+    {n:"Plop", a:"종로구 북촌로2길 5", ko:"피자·파스타", en:"Pizza and pasta"}
+  ]
+},
+{
+  no:2, lat:37.5370, lng:126.9776,
+  ko:"전쟁기념관", en:"The War Memorial of Korea",
+  addr:"서울 용산구 이태원로 29",
+  addrEn:"29 Itaewon-ro, Yongsan-gu",
+  route:{ko:"고속터미널역(9호선) 승차 → 동작역 환승(4호선) → 삼각지역 하차, 12번 출구 도보 약 5분.",
+         en:"Gosu Terminal Stn (Line 9) → transfer at Dongjak Stn to Line 4 → Samgakji Stn, Exit 12, about a 5-minute walk."},
+  see:[
+    {ko:"옥외전시장 대형 장비(항공기·전차·함정) 목록과 배치도 확인",
+     en:"Check the list and layout of the large outdoor equipment — aircraft, tanks and naval vessels"},
+    {ko:"6·25전쟁실 상설전시 동선 확인",
+     en:"Walk the permanent Korean War Room route"},
+    {ko:"형제의 상 조형물 설명문 확인",
+     en:"Read the inscription on the Statue of Brothers"}
+  ],
+  learn:[
+    {tko:"6·25전쟁 발발과 UN군 참전", ten:"Outbreak of the Korean War and the UN forces",
+     ko:"1950년 6월 25일 북한군의 남침으로 발발했으며, 미국을 비롯한 16개국이 UN군으로 참전해 대한민국을 지원했다.",
+     en:"The war broke out on 25 June 1950 with the North Korean invasion of the South, and sixteen nations including the United States fought as UN forces in support of the Republic of Korea."},
+    {tko:"정전협정(1953)", ten:"The 1953 Armistice Agreement",
+     ko:"1953년 7월 27일 판문점에서 체결되어 전투는 중단되었으나 평화협정은 아니어서 법적으로는 휴전 상태가 지속되고 있다.",
+     en:"Signed at Panmunjom on 27 July 1953, it stopped the fighting but was never a peace treaty, so the peninsula legally remains under a ceasefire to this day."},
+    {tko:"참전용사 감사 표현", ten:"How to thank the veterans",
+     ko:"외국인 참전용사 후손 안내 시 “Thank you for your country’s sacrifice during the Korean War” 등의 표현을 활용할 수 있다.",
+     en:"When guiding the descendants of foreign veterans, expressions such as “Thank you for your country's sacrifice during the Korean War” are appropriate."}
+  ],
+  foodNote:{ko:"삼각지역 인근에서 이태원 상권까지는 도보 약 15~20분 — 추정", en:"Samgakji Station and the Itaewon dining district are roughly a 15–20 minute walk apart — estimate"},
+  food:[
+    {n:"Manimal Smokehouse", a:"용산구 녹사평대로40길 47 2층", ko:"텍사스식 훈제바비큐", en:"Texas smoked BBQ"},
+    {n:"Braai Republic", a:"용산구 이태원로14길 19", ko:"남아공식 그릴", en:"South African grill"},
+    {n:"Yeshanghai", a:"용산구 이태원로23길 6", ko:"중식(딤섬)", en:"Chinese, dim sum"},
+    {n:"Linus BBQ", a:"용산구 이태원로 136-13", ko:"아메리칸 바비큐", en:"American BBQ"},
+    {n:"뻐탄집 용산직영점", a:"용산구 백범로99길 62 1·2층", ko:"돼지고기 구이", en:"Grilled pork"}
+  ]
+},
+{
+  no:3, lat:37.5794, lng:126.9910,
+  ko:"창덕궁", en:"Changdeokgung Palace",
+  addr:"서울 종로구 율곡로 99",
+  addrEn:"99 Yulgok-ro, Jongno-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 안국역 하차, 3번 출구 도보 약 5분.",
+         en:"Gosu Terminal Stn (Line 3) → Anguk Stn, Exit 3, about a 5-minute walk."},
+  see:[
+    {ko:"후원(비원) 예약 관람 절차(온라인 사전예약, 회차별 인원 제한) 확인",
+     en:"Check how the Huwon rear garden is booked — online in advance, with a cap on each time slot"},
+    {ko:"돈화문 → 인정전 → 후원 동선 확인",
+     en:"Walk the Donhwamun → Injeongjeon → Huwon route"},
+    {ko:"유네스코 세계유산 등재 안내판 위치 확인",
+     en:"Find where the UNESCO World Heritage plaque stands"}
+  ],
+  learn:[
+    {tko:"유네스코 세계문화유산 등재(1997)", ten:"UNESCO World Heritage listing, 1997",
+     ko:"창덕궁은 자연 지형을 훼손하지 않고 건물을 배치한 독창성을 인정받아 1997년 유네스코 세계문화유산으로 등재되었다.",
+     en:"Changdeokgung was inscribed on the UNESCO World Heritage List in 1997, recognised for the originality of placing its buildings without disturbing the natural terrain."},
+    {tko:"자연 지형에 순응한 배치", ten:"A plan that yields to the terrain",
+     ko:"경복궁이 좌우대칭의 정형적 배치를 따른 것과 달리, 창덕궁은 산세와 지형에 맞춰 건물을 자유롭게 배치한 것이 특징이다.",
+     en:"Where Gyeongbokgung follows a formal, symmetrical plan, Changdeokgung is distinguished by buildings arranged freely along the ridges and contours of the site."},
+    {tko:"후원 부용지·주합루", ten:"Buyongji Pond and Juhamnu",
+     ko:"부용지는 하늘(원)과 땅(방)을 상징하는 방지원도 형태의 연못이며, 주합루는 정조가 세운 왕실 도서관 겸 학문 공간이다.",
+     en:"Buyongji is a square pond with a round island — the circle standing for heaven and the square for earth — and Juhamnu is the royal library and place of study built by King Jeongjo."}
+  ],
+  food:[
+    {n:"익선취향", a:"종로구 수표로28길 17-32", ko:"파스타 등 양식", en:"Western, pasta"},
+    {n:"익선동 이미방", a:"종로구 익선동 121", ko:"파스타·피자", en:"Pasta and pizza"},
+    {n:"The Melange", a:"종로구 묘동 128-1", ko:"이탈리안", en:"Italian"},
+    {n:"서양면옥 서순라길점", a:"종로구 율곡로8길 45 1층", ko:"한식·양식 퓨전", en:"Korean–Western fusion"},
+    {n:"솔솥", a:"종로구 삼일대로30길 46 1층", ko:"돌솥밥 정식", en:"Dolsot-bap sets"}
+  ]
+},
+{
+  no:4, lat:37.5785, lng:126.9950,
+  ko:"창경궁", en:"Changgyeonggung Palace",
+  addr:"서울 종로구 창경궁로 185",
+  addrEn:"185 Changgyeonggung-ro, Jongno-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 안국역 하차 도보 약 15분. 대안: 혜화역(4호선) 4번 출구 도보 약 15분.",
+         en:"Gosu Terminal Stn (Line 3) → Anguk Stn, about a 15-minute walk. Alternative: Hyehwa Stn (Line 4), Exit 4, about 15 minutes on foot."},
+  see:[
+    {ko:"대온실(식물원) 건립 역사 안내판 확인",
+     en:"Read the history panel for the Daeonsil great greenhouse"},
+    {ko:"일제강점기 ‘창경원’ 격하 관련 전시 확인",
+     en:"Find the exhibit on the colonial-era demotion to “Changgyeongwon”"},
+    {ko:"명정전·통명전 배치도 확인",
+     en:"Check the layout of Myeongjeongjeon and Tongmyeongjeon"}
+  ],
+  learn:[
+    {tko:"일제의 궁궐 격하 정책", ten:"The Japanese policy of demoting the palace",
+     ko:"1909년 일제는 창경궁에 동물원과 식물원을 설치하고 이름을 ’창경원’으로 격하해 조선 왕실의 권위를 훼손했다.",
+     en:"In 1909 the Japanese authorities installed a zoo and a botanical garden in Changgyeonggung and demoted its name to “Changgyeongwon,” damaging the authority of the Joseon royal house."},
+    {tko:"광복 후 복원 과정", ten:"Restoration after liberation",
+     ko:"1983년부터 동·식물원을 이전하고 전각을 복원하는 사업을 진행해 1986년 창경궁이라는 원래 이름을 되찾았다.",
+     en:"From 1983 the zoo and gardens were moved out and the halls restored, and in 1986 the palace recovered its original name, Changgyeonggung."},
+    {tko:"성종·정조 역사 일화", ten:"Episodes from Seongjong and Jeongjo",
+     ko:"창경궁은 성종이 세 대비를 모시기 위해 건립했으며, 정조의 아버지 사도세자가 뒤주에 갇혀 사망한 사건의 배경이기도 하다.",
+     en:"King Seongjong built Changgyeonggung to house three queen dowagers, and it is also the setting of the death of Prince Sado, King Jeongjo's father, confined in a rice chest."}
+  ],
+  food:[
+    {n:"청화원 대학로점", a:"종로구 대명길 36", ko:"중식(대만식 국수)", en:"Taiwanese noodles"},
+    {n:"MiDoin", a:"종로구 대학로9길 32", ko:"스테이크덮밥", en:"Steak rice bowls"},
+    {n:"고봉당 혜화 대학로점", a:"종로구 대명1길 8", ko:"돼지갈비", en:"Pork ribs"},
+    {n:"메종아카이", a:"종로구 대명길 34 2층", ko:"일식(돈카츠)", en:"Japanese, tonkatsu"},
+    {n:"구룡관 혜화본점", a:"종로구 창경궁로 258-5", ko:"중식·훠궈", en:"Chinese and hotpot"}
+  ]
+},
+{
+  no:5, lat:37.5658, lng:126.9751,
+  ko:"덕수궁", en:"Deoksugung Palace",
+  addr:"서울 중구 세종대로 99",
+  addrEn:"99 Sejong-daero, Jung-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 종로3가역 환승(1호선) → 시청역 하차, 1번 출구 도보 약 3분.",
+         en:"Gosu Terminal Stn (Line 3) → transfer at Jongno 3-ga to Line 1 → City Hall Stn, Exit 1, about a 3-minute walk."},
+  see:[
+    {ko:"석조전(서양식)과 중화전(전통식) 건축 대비 사진 기록",
+     en:"Photograph the contrast between Seokjojeon, in Western style, and Junghwajeon, in traditional style"},
+    {ko:"대한제국 선포 관련 전시실 위치 확인",
+     en:"Locate the gallery on the proclamation of the Korean Empire"},
+    {ko:"왕궁수문장 교대의식 시간표(현장 게시 기준) 확인",
+     en:"Check the royal guard changing ceremony timetable as posted on site"}
+  ],
+  learn:[
+    {tko:"대한제국 선포와 광무개혁", ten:"The Korean Empire and the Gwangmu Reforms",
+     ko:"고종은 1897년 경운궁(현 덕수궁)에서 대한제국을 선포하고 황제로 즉위했으며, 이후 근대적 군사·산업·교육 개혁인 광무개혁을 추진했다.",
+     en:"In 1897 Gojong proclaimed the Korean Empire at Gyeongungung — today's Deoksugung — and took the imperial throne, then pursued the Gwangmu Reforms in the military, in industry and in education."},
+    {tko:"을사늑약 체결 장소", ten:"Where the 1905 treaty was forced through",
+     ko:"1905년 을사늑약이 덕수궁 중명전에서 체결되어 대한제국의 외교권이 박탈되었다.",
+     en:"The Eulsa Treaty of 1905 was signed at Jungmyeongjeon in Deoksugung, stripping the Korean Empire of its right to conduct foreign relations."},
+    {tko:"동서양 건축 양식 혼재", ten:"Eastern and Western architecture together",
+     ko:"전통 목조 건물인 중화전과 서양식 석조 건물인 석조전이 공존하는 것은 대한제국의 근대화 노력을 보여준다.",
+     en:"Junghwajeon, a traditional timber hall, standing alongside Seokjojeon, a Western stone building, shows the Korean Empire's effort to modernise."}
+  ],
+  food:[
+    {n:"설품 덕수궁점", a:"중구 덕수궁길 7 지1층", ko:"한식(국밥 등)", en:"Korean, gukbap"},
+    {n:"조조칼국수", a:"중구 세종대로11길 27", ko:"칼국수·해물파전", en:"Kalguksu, pajeon"},
+    {n:"백소정 시청점", a:"중구 서소문로 89-20", ko:"일식(돈카츠·마제소바)", en:"Tonkatsu, mazesoba"},
+    {n:"덕수정", a:"중구 정동길 41", ko:"한식", en:"Korean"},
+    {n:"바닷가수라간 덕수궁점", a:"중구 덕수궁길 7", ko:"일식", en:"Japanese"}
+  ]
+},
+{
+  no:6, lat:37.5744, lng:126.9560,
+  ko:"서대문형무소역사관", en:"Seodaemun Prison History Hall",
+  addr:"서울 서대문구 통일로 251",
+  addrEn:"251 Tongil-ro, Seodaemun-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 독립문역 하차, 5번 출구 도보 약 5분.",
+         en:"Gosu Terminal Stn (Line 3) → Dongnimmun Stn, Exit 5, about a 5-minute walk."},
+  see:[
+    {ko:"옥사·사형장·여옥사 관람 동선 확인",
+     en:"Walk the route through the cell blocks, the execution building and the women's block"},
+    {ko:"유관순 열사 관련 전시실 위치 확인",
+     en:"Locate the gallery devoted to the patriot Yu Gwan-sun"},
+    {ko:"한국어 전용 영상·전시물 구간 사전 확인(방문 후기 상 일부 존재) — 추정",
+     en:"Check in advance which films and displays are Korean-only, as some visitor reviews report — estimate"}
+  ],
+  learn:[
+    {tko:"일제강점기 독립운동사 개요", ten:"The independence movement in outline",
+     ko:"1910년 한일병합 이후 국내외에서 무장투쟁·의열투쟁·외교활동 등 다양한 형태의 독립운동이 전개되었다.",
+     en:"After the annexation of 1910, the independence movement unfolded at home and abroad in many forms — armed struggle, acts of righteous resistance, and diplomatic campaigns."},
+    {tko:"3·1운동과 유관순", ten:"The March First Movement and Yu Gwan-sun",
+     ko:"1919년 3월 1일 전국적으로 일어난 만세운동이며, 유관순은 이화학당 학생으로 천안 아우내 장터 만세운동을 주도하다 체포되어 서대문형무소에서 순국했다.",
+     en:"On 1 March 1919 the Manse demonstrations rose across the country; Yu Gwan-sun, a student at Ewha Haktang, led the demonstration at the Aunae market in Cheonan, was arrested, and died for her country here in Seodaemun Prison."},
+    {tko:"서대문형무소 운영 연혁", ten:"The prison's own history",
+     ko:"1908년 경성감옥으로 개소해 일제강점기 독립운동가들을 수감·처형했으며, 광복 후에도 1987년까지 교정시설로 사용되었다.",
+     en:"Opened in 1908 as Gyeongseong Prison, it held and executed independence activists throughout the colonial period, and after liberation it remained in use as a correctional facility until 1987."},
+    {tko:"어조 유의사항", ten:"A note on tone",
+     ko:"민감한 역사 주제를 외국인 방문객에게 설명할 때는 사실 전달 중심의 차분한 어조를 유지한다.",
+     en:"When explaining sensitive history to foreign visitors, keep a calm tone centred on conveying the facts."}
+  ],
+  food:[
+    {n:"독립밀방 독립문", a:"종로구 통일로12길 10-18", ko:"이탈리안(한옥)", en:"Italian in a hanok"},
+    {n:"소보로식당", a:"종로구 통일로 230 경희궁롯데캐슬 118호", ko:"아시안 퓨전", en:"Asian fusion"},
+    {n:"대성집", a:"종로구 사직로 5", ko:"도가니탕", en:"Doganitang"},
+    {n:"도깨비손칼국수", a:"서대문구 영천동 198 (영천시장 내)", ko:"칼국수·만두", en:"Kalguksu, dumplings"},
+    {n:"석교식당", a:"서대문구 통일로 183-1", ko:"순대국 등 한식", en:"Korean, sundae-guk"}
+  ]
+},
+{
+  no:7, lat:37.5240, lng:126.9803,
+  ko:"국립중앙박물관", en:"National Museum of Korea",
+  addr:"서울 용산구 서빙고로 137",
+  addrEn:"137 Seobinggo-ro, Yongsan-gu",
+  route:{ko:"고속터미널역(9호선) 승차 → 동작역 환승(4호선) → 이촌역 하차, 2번 출구 도보 약 10분(용산가족공원 경유).",
+         en:"Gosu Terminal Stn (Line 9) → transfer at Dongjak to Line 4 → Ichon Stn, Exit 2, about a 10-minute walk through Yongsan Family Park."},
+  see:[
+    {ko:"상설전시관 3층 구성(고고관·미술관·기증관 등) 동선도 확인",
+     en:"Check the floor-by-floor route through the three permanent floors — archaeology, fine arts, donated works"},
+    {ko:"국보급 소장품(금동미륵보살반가사유상 등) 전시실 위치 확인",
+     en:"Locate the rooms holding national treasures such as the Gilt-bronze Maitreya in Meditation"},
+    {ko:"용산가족공원과 연결된 주변 산책로 확인",
+     en:"Trace the walking paths that link the museum to Yongsan Family Park"}
+  ],
+  learn:[
+    {tko:"선사~조선시대 통사적 흐름", ten:"From prehistory to Joseon in one sweep",
+     ko:"구석기·신석기·청동기시대를 거쳐 삼국·통일신라·고려·조선에 이르는 한국사 전 시대를 시대순으로 조망할 수 있다.",
+     en:"The galleries let you survey the whole of Korean history in order — Palaeolithic, Neolithic and Bronze Age, then the Three Kingdoms, Unified Silla, Goryeo and Joseon."},
+    {tko:"대표 소장품", ten:"The signature holdings",
+     ko:"금동미륵보살반가사유상(국보), 백자 달항아리, 신라 금관 등이 대표 소장품이며 각각의 제작 시기와 특징을 영어로 설명할 수 있어야 한다.",
+     en:"The Gilt-bronze Maitreya in Meditation, a National Treasure, the white porcelain moon jar and the Silla gold crowns are the signature holdings, and you should be able to give each one's period and features in English."},
+    {tko:"무료·유료 정책", ten:"Admission policy",
+     ko:"상설전시는 무료이며 특별전시만 별도 요금이 부과되는 것이 원칙이다.",
+     en:"As a rule the permanent galleries are free of charge and only special exhibitions carry a separate fee."}
+  ],
+  foodNote:{ko:"박물관이 용산가족공원 부지 내에 있어 도보권 상업시설이 제한적이며, 관내·인접 4곳만 확인됩니다.",
+            en:"The museum sits inside Yongsan Family Park, so there is little dining within walking distance — only four on-site or adjacent options were confirmed."},
+  food:[
+    {n:"Mirror Pond Restaurant", a:"용산구 서빙고로 137 (박물관 내)", ko:"이탈리안", en:"Italian"},
+    {n:"고메이플레이스 푸드코트", a:"용산구 용산동6가 11-426 (박물관 내)", ko:"푸드코트", en:"Food court"},
+    {n:"Pagoda, Restaurant by Doore", a:"용산구 서빙고로 137 (박물관 내)", ko:"한식", en:"Korean"},
+    {n:"Le Miya", a:"용산구 이촌동 301-23", ko:"퓨전 파스타", en:"Fusion pasta"}
+  ]
+},
+{
+  no:8, lat:37.5853, lng:126.9942,
+  ko:"성균관(문묘)", en:"Seonggyungwan and Munmyo",
+  addr:"서울 종로구 성균관로 25-1",
+  addrEn:"25-1 Sungkyunkwan-ro, Jongno-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 충무로역 환승(4호선) → 혜화역 하차, 4번 출구 도보 약 15분.",
+         en:"Gosu Terminal Stn (Line 3) → transfer at Chungmuro to Line 4 → Hyehwa Stn, Exit 4, about a 15-minute walk."},
+  see:[
+    {ko:"대성전(공자 위패 봉안) 및 명륜당 배치 확인",
+     en:"Check the siting of Daeseongjeon, which enshrines Confucius's tablet, and of Myeongnyundang"},
+    {ko:"은행나무(노거수) 위치와 유래 안내판 확인",
+     en:"Find the old ginkgo trees and the panel explaining their origin"},
+    {ko:"성균관대학교와의 경계·출입 동선 확인",
+     en:"Work out where the grounds meet Sungkyunkwan University and how visitors enter"}
+  ],
+  learn:[
+    {tko:"조선시대 최고 교육기관", ten:"The highest school of the Joseon dynasty",
+     ko:"성균관은 조선시대 국가가 운영한 최고 유교 교육기관으로, 문과 급제를 위한 인재를 양성했다.",
+     en:"Seonggyungwan was the highest state-run Confucian academy of the Joseon dynasty, training the candidates who would pass the civil service examination."},
+    {tko:"문묘 석전대제", ten:"The Seokjeon Daeje rite at Munmyo",
+     ko:"공자와 유교 성현에게 제사를 지내는 의식으로 매년 봄·가을 두 차례 봉행되며 국가무형유산으로 지정되어 있다.",
+     en:"This rite in honour of Confucius and the Confucian sages is performed twice a year, in spring and autumn, and is designated a National Intangible Heritage."},
+    {tko:"유교 교육 과정", ten:"The Confucian curriculum",
+     ko:"사서(논어·맹자·대학·중용)와 오경(시경·서경·역경·예기·춘추)을 중심으로 교육이 이루어졌다.",
+     en:"Teaching centred on the Four Books — the Analects, Mencius, the Great Learning and the Doctrine of the Mean — and the Five Classics: the Book of Odes, the Book of Documents, the Book of Changes, the Book of Rites and the Spring and Autumn Annals."}
+  ],
+  food:[
+    {n:"Persian Palace", a:"종로구 성균관로6길 9", ko:"페르시아 요리(커리)", en:"Persian, curries"},
+    {n:"혜화도담", a:"종로구 대명1길 16-6", ko:"한식(김치찜)", en:"Korean, kimchi-jjim"},
+    {n:"명신식당", a:"종로구 명륜3가 118-2", ko:"순대국", en:"Sundae-guk"},
+    {n:"성균관 감자탕", a:"종로구 명륜3가 118-3", ko:"감자탕", en:"Gamjatang"},
+    {n:"Pizzeria O", a:"종로구 동숭길 86", ko:"피자", en:"Pizza"}
+  ]
+},
+{
+  no:9, lat:37.5744, lng:126.9866,
+  ko:"운현궁", en:"Unhyeongung Royal Residence",
+  addr:"서울 종로구 삼일대로 464",
+  addrEn:"464 Samil-daero, Jongno-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 안국역 하차, 4번 출구 도보 약 3분.",
+         en:"Gosu Terminal Stn (Line 3) → Anguk Stn, Exit 4, about a 3-minute walk."},
+  see:[
+    {ko:"노락당·이로당·노안당 건물별 용도 확인",
+     en:"Establish what each hall was for — Norakdang, Irodang and Noandang"},
+    {ko:"흥선대원군 관련 전시물 위치 확인",
+     en:"Locate the displays on Heungseon Daewongun"},
+    {ko:"사랑채·안채 구조 비교",
+     en:"Compare the structure of the men's sarangchae and the women's anchae"}
+  ],
+  learn:[
+    {tko:"흥선대원군과 고종 즉위", ten:"Heungseon Daewongun and Gojong's accession",
+     ko:"흥선대원군의 둘째 아들이 12세에 고종으로 즉위하면서 운현궁은 왕의 사저이자 대원군의 권력 기반이 되었다.",
+     en:"When Heungseon Daewongun's second son came to the throne as Gojong at the age of twelve, Unhyeongung became both the king's private residence and the Daewongun's base of power."},
+    {tko:"운현궁의 정치사적 의미", ten:"Its place in political history",
+     ko:"고종 즉위 초 10년간 흥선대원군이 섭정하며 실질적인 정치를 운현궁에서 펼쳤다.",
+     en:"For the first ten years of Gojong's reign the Heungseon Daewongun acted as regent and conducted the real business of government from Unhyeongung."},
+    {tko:"왕실 친인척 가옥 구조", ten:"How a royal kinsman's house was arranged",
+     ko:"사랑채(노안당)는 대원군의 사무·접객 공간, 안채(노락당)는 가족 생활 공간으로 남녀 공간이 엄격히 구분되어 있다.",
+     en:"The sarangchae, Noandang, was the Daewongun's office and reception space and the anchae, Norakdang, the family's living quarters — the men's and women's areas were strictly separated."}
+  ],
+  food:[
+    {n:"익선애뜻", a:"종로구 익선동 163", ko:"퓨전 한식", en:"Korean fusion"},
+    {n:"냐항 in 안국", a:"종로구 윤보선길 34-1", ko:"베트남 요리", en:"Vietnamese"},
+    {n:"Cafe Onion Anguk", a:"종로구 계동길 5", ko:"베이커리 카페", en:"Bakery café"},
+    {n:"유소바 안국역점", a:"종로구 창덕궁1길 32", ko:"소바·우동", en:"Soba and udon"},
+    {n:"신라제면 안국", a:"종로구 계동길 19-6 1층", ko:"해물칼국수·해물파전", en:"Seafood kalguksu"}
+  ]
+},
+{
+  no:10, lat:37.5796, lng:126.9770,
+  ko:"경복궁", en:"Gyeongbokgung Palace",
+  addr:"서울 종로구 사직로 161",
+  addrEn:"161 Sajik-ro, Jongno-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 경복궁역 하차, 5번 출구 도보 약 2분.",
+         en:"Gosu Terminal Stn (Line 3) → Gyeongbokgung Stn, Exit 5, about a 2-minute walk."},
+  see:[
+    {ko:"수문장 교대의식 시간표(현장 게시 기준) 확인",
+     en:"Check the gate guard changing ceremony timetable as posted on site"},
+    {ko:"근정전 → 경회루 → 향원정 동선 확인",
+     en:"Walk the Geunjeongjeon → Gyeonghoeru → Hyangwonjeong route"},
+    {ko:"국립고궁박물관·국립민속박물관과의 연계 동선 확인",
+     en:"Work out how the route connects to the National Palace Museum and the National Folk Museum"}
+  ],
+  learn:[
+    {tko:"조선 법궁으로서의 위상", ten:"The principal palace of Joseon",
+     ko:"1395년 태조 이성계가 조선 건국 후 세운 정궁으로, 조선 왕조 통치의 중심지였다.",
+     en:"Built in 1395 by King Taejo, Yi Seong-gye, after he founded the dynasty, it was the primary palace and the centre from which Joseon was governed."},
+    {tko:"임진왜란 소실과 중건", ten:"Burned in the Imjin War, rebuilt in 1867",
+     ko:"1592년 임진왜란 때 소실된 후 270여 년간 방치되다가 1867년 흥선대원군에 의해 중건되었다.",
+     en:"Destroyed by fire in 1592 during the Imjin War, it lay abandoned for some 270 years before Heungseon Daewongun rebuilt it in 1867."},
+    {tko:"근정전·경회루의 의미", ten:"What Geunjeongjeon and Gyeonghoeru were for",
+     ko:"근정전은 왕의 즉위식과 국가 의례가 열린 정전이며, 경회루는 외국 사신 접대와 연회를 위한 누각이다.",
+     en:"Geunjeongjeon was the throne hall where coronations and state rites took place, and Gyeonghoeru the pavilion for banquets and for receiving foreign envoys."}
+  ],
+  food:[
+    {n:"경복궁맛집 사직로서울", a:"종로구 사직로 127-14 2층", ko:"불고기·구이", en:"Bulgogi, grilled meat"},
+    {n:"양탄집", a:"종로구 자하문로1가길 5", ko:"삼겹살(한식 구이)", en:"Samgyeopsal BBQ"},
+    {n:"경복궁식당", a:"종로구 사직로 101 지하1층", ko:"한식(단체식)", en:"Korean, for groups"},
+    {n:"뻐탄집", a:"종로구 자하문로1가길 13", ko:"돼지고기 구이", en:"Grilled pork"},
+    {n:"옹시미 경복궁점", a:"종로구 사직로 105 1층", ko:"메밀·감자옹심이", en:"Buckwheat, ongsimi"}
+  ]
+},
+{
+  no:11, lat:37.5590, lng:126.9940,
+  ko:"남산골한옥마을", en:"Namsangol Hanok Village",
+  addr:"서울 중구 퇴계로34길 28",
+  addrEn:"28 Toegye-ro 34-gil, Jung-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 충무로역 하차(3·4호선 환승역), 3번 또는 4번 출구 도보 약 5분.",
+         en:"Gosu Terminal Stn (Line 3) → Chungmuro Stn, where Lines 3 and 4 meet, Exit 3 or 4, about a 5-minute walk."},
+  see:[
+    {ko:"이건 5채 한옥의 원 소재지(이축 복원임을 확인)",
+     en:"Find where each of the five relocated hanok originally stood, and confirm they were moved and rebuilt here"},
+    {ko:"중앙광장 전통공연 일정 확인",
+     en:"Check the schedule of traditional performances on the central plaza"},
+    {ko:"서울남산국악당 위치 확인",
+     en:"Locate Seoul Namsan Gugakdang"}
+  ],
+  learn:[
+    {tko:"한옥마을 조성 배경", ten:"Why the village is here",
+     ko:"1998년 서울 전역에 흩어져 있던 전통 한옥 5채를 이 자리로 옮겨 복원하며 조성되었다.",
+     en:"In 1998 five traditional hanok scattered across Seoul were moved to this site and rebuilt, and the village was created around them."},
+    {tko:"남산과 서울 성곽", ten:"Namsan and the capital's wall",
+     ko:"남산은 조선시대 한양 도성을 둘러싼 내사산 중 하나이며, 인근에 한양도성 성곽길이 이어져 있다.",
+     en:"Namsan is one of the four inner mountains that ringed the Joseon capital, and the Hanyangdoseong wall trail runs close by."},
+    {tko:"전통 정원 조경 개념", ten:"The idea behind a traditional garden",
+     ko:"마당을 중심에 두고 화계(계단식 화단)를 배치하는 것이 한국 전통 정원의 특징이다.",
+     en:"Placing the madang courtyard at the centre and setting hwagye, terraced flower beds, along the slope is characteristic of the Korean traditional garden."}
+  ],
+  food:[
+    {n:"Dalgang", a:"중구 필동2가 84-113", ko:"한옥 카페", en:"Café in a hanok"},
+    {n:"남산동곳간", a:"중구 삼일대로 343 대신파이낸스센터 2층", ko:"한식(발효음식)", en:"Korean, fermented"},
+    {n:"원님곰탕", a:"중구 필동1가 32-8", ko:"곰탕", en:"Gomtang"},
+    {n:"온수반 충무로점", a:"중구 필동2가 84-91", ko:"우육면(소고기 국수)", en:"Beef noodle soup"},
+    {n:"한사리 충무로점", a:"중구 퇴계로 220", ko:"돼지등뼈해장국", en:"Pork-bone haejang-guk"}
+  ]
+},
+{
+  no:12, lat:37.5704, lng:126.9700,
+  ko:"서울역사박물관", en:"Seoul Museum of History",
+  addr:"서울 종로구 새문안로 55",
+  addrEn:"55 Saemunan-ro, Jongno-gu",
+  route:{ko:"고속터미널역(3호선) 승차 → 경복궁역 하차, 7번 출구 도보 약 5분. 대안: 광화문역(5호선) 7번 출구 도보 약 5분.",
+         en:"Gosu Terminal Stn (Line 3) → Gyeongbokgung Stn, Exit 7, about a 5-minute walk. Alternative: Gwanghwamun Stn (Line 5), Exit 7, also about 5 minutes."},
+  see:[
+    {ko:"대형 서울 축소모형 전시실 위치 확인",
+     en:"Locate the hall with the large scale model of Seoul"},
+    {ko:"상설전시 4개 존(조선시대~현대) 구성 확인",
+     en:"Check how the four permanent zones run from the Joseon period to the present"},
+    {ko:"무료 영어 해설투어 운영 시간(현장 확인)",
+     en:"Confirm on site the times of the free English guided tour"}
+  ],
+  learn:[
+    {tko:"한양 정도부터 현대 서울까지", ten:"From the founding of Hanyang to modern Seoul",
+     ko:"1394년 태조 이성계가 한양을 조선의 수도로 정한 이후 오늘날까지 서울의 도시 변천사를 시대별로 전시한다.",
+     en:"The museum sets out the city's transformation period by period, from 1394, when King Taejo made Hanyang the capital of Joseon, through to the present day."},
+    {tko:"일제강점기~광복 이후 변화", ten:"From colonial rule through liberation",
+     ko:"일제강점기 도시계획으로 전통 가로가 훼손되었고, 광복과 6·25전쟁 이후 급속한 도시화·산업화를 거치며 현재의 메가시티로 성장했다.",
+     en:"Colonial-era planning broke up the traditional street pattern, and after liberation and the Korean War rapid urbanisation and industrialisation grew the city into today's megacity."},
+    {tko:"서울 지명 유래", ten:"Where the name Seoul comes from",
+     ko:"’서울’은 수도를 뜻하는 순우리말이며, 한강과 사대문(흥인지문·돈의문·숭례문·숙정문)은 조선시대 도성 방어체계의 핵심이었다.",
+     en:"“Seoul” is a native Korean word meaning capital, and the Han River together with the four great gates — Heunginjimun, Donuimun, Sungnyemun and Sukjeongmun — formed the core of the capital's defences in Joseon."}
+  ],
+  food:[
+    {n:"어슬광화문", a:"종로구 새문안로2길 10 지하1층", ko:"퓨전 한식", en:"Korean fusion"},
+    {n:"무탄 광화문점", a:"종로구 새문안로 68 지하1층", ko:"중식(짜장면)", en:"Chinese, jjajangmyeon"},
+    {n:"육급강", a:"종로구 새문안로5길 10-1 2층", ko:"고기구이", en:"Grilled meat"},
+    {n:"원가옥 광화문점", a:"종로구 새문안로2길 10 디페리스 지하", ko:"한정식·전골", en:"Hanjeongsik, hot pot"},
+    {n:"광화문나폴리", a:"종로구 새문안로9길 24-4", ko:"이탈리안(피자)", en:"Italian, pizza"}
+  ]
+}
+];
+
+const START = {lat:37.5049, lng:127.0048, ko:"반포 출발", en:"Banpo start"};
+const REPO = "https://github.com/dyhan0528/korea-heritage-guide";
+
+const HISTORY = [
+  {v:"v1.0", d:"2026.09.20", ko:"앱 UI 전면 개편 — 하단 4탭 구조, 태극·오방색 팔레트, 한 화면 스크롤 상세, 진도 링",
+   en:"Full app UI rebuild — four-tab shell, taegeuk and obangsaek palette, single-scroll detail, progress rings"},
+  {v:"v0.1", d:"2026.09.20", ko:"여행일지 문서를 웹 답사노트로 변환 — 12강 데이터화, 한·영 대역, 좌표 기반 개략 지도",
+   en:"Field journal turned into a web note — 12 sites structured, Korean–English pairing, coordinate-based schematic map"}
+];
+
+/* ---------------- i18n ---------------- */
+const T = {
+  appName:{ko:"한국탐방 해설사", en:"Korea Heritage Guide"},
+  map:{ko:"답사 지도", en:"Field map"}, list:{ko:"답사지 12", en:"12 sites"},
+  drill:{ko:"해설 연습", en:"Drill"}, me:{ko:"내 진도", en:"My progress"},
+  kicker:{ko:"청소년 문화유산해설사 과정", en:"Youth heritage interpreter course"},
+  h1:{ko:"반포에서 출발하는\n서울 답사 12곳", en:"Twelve Seoul sites,\nstarting from Banpo"},
+  lede:{ko:"지도에서 번호를 누르면 그 답사지의 체크리스트와 한·영 해설이 한 화면에 펼쳐집니다.",
+        en:"Tap a number on the map and that site's checklist and bilingual script open in one screen."},
+  stSites:{ko:"답사지", en:"Sites"}, stPoints:{ko:"해설 포인트", en:"Points"}, stChecks:{ko:"체크 항목", en:"Checks"},
+  lgSite:{ko:"답사지", en:"Site"}, lgDone:{ko:"체크 완료", en:"Done"}, lgStart:{ko:"출발 반포", en:"Start"},
+  lgRiver:{ko:"한강", en:"Han River"}, lgHill:{ko:"내사산", en:"Mountains"},
+  mapNote:{ko:"실제 위·경도로 배치한 개략도입니다. 길찾기는 각 답사지의 지도 버튼을 쓰세요.",
+           en:"A schematic placed from real coordinates. Use each site's map button for navigation."},
+  see:{ko:"답사에서 볼 것", en:"See on site"}, learn:{ko:"해설 포인트", en:"Talking points"},
+  route:{ko:"가는 길", en:"Getting there"}, food:{ko:"주변 식당", en:"Nearby food"},
+  seeHint:{ko:"현장에서 확인하고 눌러 체크하세요.", en:"Tap each one once you have checked it on site."},
+  learnHint:{ko:"시험에서는 같은 내용을 한국어와 영어로 모두 말해야 합니다.", en:"In the exam you must deliver the same content in both Korean and English."},
+  fact:{ko:"검색 확인", en:"Verified"}, est:{ko:"추정", en:"Estimate"}, learned:{ko:"외움", en:"Learned"},
+  addr:{ko:"주소", en:"Address"}, gmap:{ko:"구글 지도", en:"Google Maps"}, nmap:{ko:"네이버 지도", en:"Naver Map"},
+  fromBanpo:{ko:"반포 출발 경로", en:"Route from Banpo"},
+  foodSrc:{ko:"구글 지도 검색 결과 · 2026-09-20 기준", en:"From Google Maps search · as of 20 Sept 2026"},
+  scopeAll:{ko:"전체 12곳", en:"All 12 sites"}, scopeOne:{ko:"이 답사지만", en:"This site only"},
+  think:{ko:"먼저 스스로 설명해 보세요. 준비됐으면 아래를 누릅니다.", en:"Explain it yourself first, then tap below."},
+  show:{ko:"해설 보기", en:"Show script"}, got:{ko:"외웠어요", en:"Got it"}, again:{ko:"다시 볼게요", en:"Review"},
+  next:{ko:"다음 문제", en:"Next"}, shuffleAgain:{ko:"한 바퀴 끝! 다시 섞기", en:"Deck finished — shuffle again"},
+  bothNote:{ko:"시험 대비 — 한국어·영어 함께 표시", en:"Exam practice — Korean and English together"},
+  checksDone:{ko:"답사 체크", en:"Site checks"}, pointsDone:{ko:"해설 암기", en:"Points learned"},
+  overall:{ko:"전체 진도", en:"Overall"},
+  bySite:{ko:"답사지별 진도", en:"Progress by site"},
+  install:{ko:"홈 화면에 앱으로 추가", en:"Add to home screen"},
+  repo:{ko:"소스코드 · 개발 기록 보기", en:"Source code and commit log"},
+  installHow:{ko:"브라우저 공유·메뉴에서 ‘홈 화면에 추가’를 누르면 앱 아이콘으로 실행됩니다.",
+              en:"Use your browser's share or menu, then “Add to Home Screen,” to launch it as an app icon."},
+  histTitle:{ko:"개발 히스토리", en:"Release history"},
+  maker:{ko:"기획·개발·배포", en:"Design, build, release"},
+  reset:{ko:"진도 초기화", en:"Reset progress"},
+  resetAsk:{ko:"체크와 암기 진도를 모두 지울까요?", en:"Clear every check and every learned point?"},
+  source:{ko:"출처: 「청소년 문화유산해설사 준비 여행일지 (반포 출발)」 2026-09-20. ‘검색 확인’은 검색으로 확인된 사실, ‘추정’은 확인되지 않은 추정입니다. 운영 시간·예약 방법·의식 시간표는 방문 전 공식 안내로 다시 확인하세요. 진도는 이 브라우저에만 저장됩니다.",
+          en:"Source: “Youth Heritage Interpreter field journal (from Banpo),” 20 Sept 2026. “Verified” marks facts confirmed by search; “Estimate” marks unconfirmed guesses. Re-check opening hours, bookings and ceremony times against official notices before you go. Progress is stored only in this browser."}
+};
+
+/* ---------------- state ---------------- */
+const KEY = "dyhan-heritage-v2";
+let st = {lang:"ko", view:"map", sel:1, checks:{}, known:{}, scope:"all"};
+try{ const r = localStorage.getItem(KEY); if(r) st = Object.assign(st, JSON.parse(r) || {}); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+
+const L = k => T[k][st.lang === "en" ? "en" : "ko"];
+const P = (ko, en) => st.lang === "en" ? en : ko;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+function bi(ko, en){
+  if(st.lang === "ko") return `<span class="x">${esc(ko)}</span>`;
+  if(st.lang === "en") return `<span class="x">${esc(en)}</span>`;
+  return `<span class="bi"><span class="r"><span class="tg">KO</span><span class="x">${esc(ko)}</span></span>
+    <span class="r e"><span class="tg">EN</span><span class="x">${esc(en)}</span></span></span>`;
+}
+
+const site = () => SITES.find(s => s.no === st.sel) || SITES[0];
+const TOT_CHK = SITES.reduce((n,s) => n + s.see.length, 0);
+const POINTS = SITES.flatMap(s => s.learn.map((p,i) => ({...p, no:s.no, sko:s.ko, sen:s.en, id:s.no + "-" + i})));
+const chkDone = s => s.see.filter((_,i) => st.checks[s.no + "-" + i]).length;
+const nChecks = () => Object.keys(st.checks).filter(k => st.checks[k]).length;
+const nKnown = () => Object.keys(st.known).filter(k => st.known[k]).length;
+
+const ICO = {
+  pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  ext:'<path d="M14 4h6v6M20 4l-8.5 8.5M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>',
+  chev:'<path d="M9 5l7 7-7 7"/>',
+  check:'<path d="M4.5 12.5l5 5 10-11"/>',
+  phone:'<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+  code:'<path d="M9 18l-5-6 5-6M15 6l5 6-5 6"/>',
+  trash:'<path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/>'
+};
+const svg = (d, cls) => `<svg viewBox="0 0 24 24" class="${cls||""}">${d}</svg>`;
+
+/* ---------------- ring ---------------- */
+function ring(done, total, size, color){
+  const r = (size - 6) / 2, c = 2 * Math.PI * r, p = total ? done / total : 0;
+  return `<div class="ring" style="width:${size}px;height:${size}px">
+    <svg width="${size}" height="${size}">
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"></circle>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="5"
+        stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}"></circle>
+    </svg><span class="t">${Math.round(p*100)}<small style="font-size:.66em">%</small></span></div>`;
+}
+
+/* ---------------- map ---------------- */
+const MW = 800, MH = 900, LON0 = 126.925, LONS = 0.110, LAT1 = 37.600, LATS = 0.105;
+const px = l => (l - LON0) / LONS * MW;
+const py = l => (LAT1 - l) / LATS * MH * (MH / 960) + 0;
+function mapSvg(){
+  const K = 900 / 960;
+  const X = l => px(l), Y = l => (LAT1 - l) / LATS * 960 * K;
+  const cur = site(), sp = {x:X(START.lng), y:Y(START.lat)}, cp = {x:X(cur.lng), y:Y(cur.lat)};
+  const pins = SITES.map(s => {
+    const x = X(s.lng), y = Y(s.lat), on = s.no === st.sel, dn = chkDone(s) === s.see.length;
+    return `<g class="pin${on ? " on" : ""}${dn && !on ? " done" : ""}" data-no="${s.no}" role="button" tabindex="0"
+      aria-label="${esc(s.no + ". " + P(s.ko, s.en))}">
+      <circle class="d" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${on ? 21 : 16}"></circle>
+      <text x="${x.toFixed(1)}" y="${y.toFixed(1)}">${s.no}</text></g>`;
+  }).join("");
+  const right = cp.x > MW - 200;
+  return `<svg class="mp" viewBox="0 0 ${MW} ${MH}" role="img"
+    aria-label="${esc(P("서울 도심 답사지 개략 지도","Schematic map of field sites in central Seoul"))}">
+    <rect width="${MW}" height="${MH}" rx="14" fill="var(--card-2)"></rect>
+    <g fill="var(--line)" opacity=".85">
+      <ellipse cx="407" cy="40" rx="96" ry="44"></ellipse>
+      <ellipse cx="240" cy="180" rx="72" ry="48"></ellipse>
+      <ellipse cx="460" cy="419" rx="96" ry="55" transform="rotate(-8 460 419)"></ellipse>
+      <ellipse cx="598" cy="169" rx="40" ry="53"></ellipse>
+    </g>
+    <path d="M 0,532 Q 130,563 255,600 Q 370,647 473,686 Q 640,675 800,660 L 800,743 Q 640,758 473,768 Q 370,730 255,682 Q 130,647 0,614 Z"
+      fill="var(--cheong)" opacity=".16"></path>
+    <path d="M 407,38 C 330,75 275,124 240,180 C 272,246 320,302 366,344 C 400,384 430,409 460,419
+             C 522,403 582,349 611,294 C 616,244 605,201 596,172 C 592,131 590,109 589,90
+             C 522,54 460,39 407,38 Z" fill="none" stroke="var(--line-2)" stroke-width="2" stroke-dasharray="8 7"></path>
+    <text class="geo" x="26" y="700">${esc(P("한강","HAN RIVER"))}</text>
+    <text class="geo" x="398" y="424">${esc(P("남산","NAMSAN"))}</text>
+    <line x1="${sp.x.toFixed(1)}" y1="${sp.y.toFixed(1)}" x2="${cp.x.toFixed(1)}" y2="${cp.y.toFixed(1)}"
+      stroke="var(--hong)" stroke-width="1.8" stroke-dasharray="5 6" opacity=".5"></line>
+    <circle cx="${sp.x.toFixed(1)}" cy="${sp.y.toFixed(1)}" r="8" fill="var(--hong)"></circle>
+    <circle cx="${sp.x.toFixed(1)}" cy="${sp.y.toFixed(1)}" r="16" fill="none" stroke="var(--hong)" stroke-width="1.6" opacity=".45"></circle>
+    <text class="pinlab" x="${(sp.x - 22).toFixed(1)}" y="${(sp.y + 6).toFixed(1)}" text-anchor="end">${esc(P(START.ko, START.en))}</text>
+    ${pins}
+    <text class="pinlab" x="${(right ? cp.x - 30 : cp.x + 30).toFixed(1)}" y="${(cp.y + 6).toFixed(1)}"
+      text-anchor="${right ? "end" : "start"}">${esc(P(cur.ko, cur.en))}</text>
+  </svg>`;
+}
+
+/* ---------------- views ---------------- */
+function vMap(){
+  const lg = [["var(--hong)", L("lgSite")], ["var(--nok)", L("lgDone")], ["var(--cheong)", L("lgRiver")], ["var(--line-2)", L("lgHill")]];
+  return `<section class="hero">
+      <div class="kicker"><i class="flagdot"></i><span class="cap">${esc(L("kicker"))}</span></div>
+      <h1>${esc(L("h1")).replace("\n","<br>")}</h1>
+      <p>${esc(L("lede"))}</p>
+    </section>
+    <div class="statrow">
+      <div class="stat"><b>12</b><span>${esc(L("stSites"))}</span></div>
+      <div class="stat"><b>${POINTS.length}</b><span>${esc(L("stPoints"))}</span></div>
+      <div class="stat"><b>${TOT_CHK}</b><span>${esc(L("stChecks"))}</span></div>
+    </div>
+    <div class="card mapcard">${mapSvg()}
+      <div class="maplg">${lg.map(([c,t]) => `<span><i style="background:${c}"></i>${esc(t)}</span>`).join("")}</div>
+      <p class="mapnote">${esc(L("mapNote"))}</p>
+    </div>`;
+}
+
+function vList(){
+  return `<div class="slist">${SITES.map(s => {
+    const d = chkDone(s), full = d === s.see.length;
+    return `<button class="srow${full ? " done" : ""}" type="button" data-go="${s.no}">
+      <span class="no">${s.no}</span>
+      <span class="tx"><b>${esc(P(s.ko, s.en))}</b>${st.lang === "both" ? `<em>${esc(s.en)}</em>` : ""}</span>
+      <span class="rt"><span class="pg" style="${full ? "color:var(--nok)" : ""}">${d}/${s.see.length}</span>${svg(ICO.chev)}</span>
+    </button>`;
+  }).join("")}</div>
+  <p class="src-note" style="margin-top:18px">${esc(L("source"))}</p>`;
+}
+
+function vSite(){
+  const s = site();
+  const gq = encodeURIComponent(s.ko + " " + s.addr);
+  return `<section class="shd">
+      <div class="top"><span class="badge">${String(s.no).padStart(2,"0")}</span>
+        <span class="chip ${chkDone(s) === s.see.length ? "ok" : "en"}">${chkDone(s)} / ${s.see.length} ${esc(P("체크","checked"))}</span>
+      </div>
+      <h1>${esc(P(s.ko, s.en))}</h1>
+      <div class="sub">${esc(st.lang === "en" ? s.ko : s.en)}</div>
+      <p class="addr">${esc(P(s.addr, s.addrEn))} <span class="chip ok" style="margin-left:4px">${esc(L("fact"))}</span></p>
+      <div class="gobtns">
+        <a class="gobtn" href="https://www.google.com/maps/search/?api=1&query=${gq}" target="_blank" rel="noopener">${svg(ICO.pin)}${esc(L("gmap"))}</a>
+        <a class="gobtn" href="https://map.naver.com/p/search/${encodeURIComponent(s.ko)}" target="_blank" rel="noopener">${svg(ICO.pin)}${esc(L("nmap"))}</a>
+      </div>
+    </section>
+
+    <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("see"))}</h2><span class="n">${chkDone(s)}/${s.see.length}</span></div>
+      <p class="src-note" style="margin:-4px 0 10px">${esc(L("seeHint"))}</p>
+      ${s.see.map((c,i) => {
+        const id = s.no + "-" + i, on = !!st.checks[id];
+        return `<button class="checkrow${on ? " on" : ""}" type="button" data-chk="${id}" aria-pressed="${on}">
+          <span class="bx">${svg(ICO.check)}</span><span class="cx">${bi(c.ko, c.en)}</span></button>`;
+      }).join("")}
+    </div>
+
+    <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("learn"))}</h2><span class="n">${s.learn.length}</span></div>
+      <p class="src-note" style="margin:-4px 0 10px">${esc(L("learnHint"))}</p>
+      ${s.learn.map((p,i) => {
+        const id = s.no + "-" + i;
+        return `<article class="pt"><div class="ph">
+            <h3>${esc(st.lang === "en" ? p.ten : p.tko)}${st.lang === "both" ? `<span class="pe">${esc(p.ten)}</span>` : ""}</h3>
+            ${st.known[id] ? `<span class="chip ok">${esc(L("learned"))}</span>` : `<span class="cap">${String(i+1).padStart(2,"0")}</span>`}
+          </div><div class="pb">${bi(p.ko, p.en)}</div></article>`;
+      }).join("")}
+    </div>
+
+    <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("route"))}</h2><span class="chip est">${esc(L("est"))}</span></div>
+      <div class="info"><div class="cap lb">${esc(L("fromBanpo"))}</div>${bi(s.route.ko, s.route.en)}</div>
+    </div>
+
+    <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("food"))}</h2><span class="n">${s.food.length}</span></div>
+      ${s.foodNote ? `<p class="note">${bi(s.foodNote.ko, s.foodNote.en)}</p>` : ""}
+      <div class="flist">${s.food.map(f => `<div class="frow">
+        <b>${esc(f.n)}</b><span class="tg">${esc(P(f.ko, f.en))}</span>
+        <span class="ad">${esc(f.a)}</span></div>`).join("")}</div>
+      <p class="src-note" style="margin-top:9px">${esc(L("foodSrc"))}</p>
+    </div>`;
+}
+
+let deck = [], di = 0, open = false;
+function buildDeck(){
+  const pool = st.scope === "site" ? POINTS.filter(p => p.no === st.sel) : POINTS;
+  deck = pool.slice();
+  for(let i = deck.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+  di = 0; open = false;
+}
+function vDrill(){
+  if(!deck.length) buildDeck();
+  const p = deck[di];
+  const seg = `<div class="scopeseg" id="scopeSeg">
+      <button type="button" data-scope="all" aria-pressed="${st.scope === "all"}">${esc(L("scopeAll"))}</button>
+      <button type="button" data-scope="site" aria-pressed="${st.scope === "site"}">${esc(L("scopeOne"))}</button>
+    </div>`;
+  if(!p) return seg + `<div class="qcard"><p>${esc(L("shuffleAgain"))}</p>
+    <div class="acts"><button class="bigbtn p" type="button" id="dShuffle">${esc(L("shuffleAgain"))}</button></div></div>`;
+  return seg + `<div class="qcard">
+      <div class="src"><span class="s1">${String(p.no).padStart(2,"0")}</span>
+        <span class="s2">${esc(P(p.sko, p.sen))}</span>
+        ${st.known[p.id] ? `<span class="chip ok">${esc(L("learned"))}</span>` : ""}
+        <span class="ct">${di + 1} / ${deck.length}</span></div>
+      <div class="q">${esc(st.lang === "en" ? p.ten : p.tko)}</div>
+      ${st.lang === "both" ? `<div class="qe">${esc(p.ten)}</div>` : ""}
+      ${open
+        ? `<div class="ans"><div class="cap" style="margin-bottom:9px">${esc(L("bothNote"))}</div>
+            <span class="bi"><span class="r"><span class="tg">KO</span><span class="x">${esc(p.ko)}</span></span>
+            <span class="r e"><span class="tg">EN</span><span class="x">${esc(p.en)}</span></span></span></div>`
+        : `<p class="hint">${esc(L("think"))}</p>`}
+    </div>
+    ${open
+      ? `<div class="acts two"><button class="bigbtn g" type="button" id="dGot">${esc(L("got"))}</button>
+          <button class="bigbtn s" type="button" id="dAgain">${esc(L("again"))}</button></div>`
+      : `<div class="acts"><button class="bigbtn p" type="button" id="dShow">${esc(L("show"))}</button>
+          <button class="bigbtn s" type="button" id="dNext">${esc(L("next"))}</button></div>`}`;
+}
+
+function vMe(){
+  const c = nChecks(), k = nKnown(), tot = c + k, totAll = TOT_CHK + POINTS.length;
+  return `<div class="bigring">
+      ${ring(tot, totAll, 78, "var(--hong)")}
+      <div class="tx"><b>${esc(L("overall"))}</b>
+        <span>${esc(L("checksDone"))} ${c}/${TOT_CHK} · ${esc(L("pointsDone"))} ${k}/${POINTS.length}</span></div>
+    </div>
+
+    <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("bySite"))}</h2></div>
+      <div class="card" style="padding:10px 14px">${SITES.map(s => {
+        const d = chkDone(s), f = d === s.see.length;
+        return `<div class="pbar"><span class="l">${String(s.no).padStart(2,"0")}</span>
+          <span class="tk"><span class="fl${f ? " full" : ""}" style="width:${d / s.see.length * 100}%"></span></span>
+          <span class="v">${d}/${s.see.length}</span></div>`;
+      }).join("")}</div>
+    </div>
+
+    <div class="sect">
+      <div class="sect-hd"><h2>${esc(L("histTitle"))}</h2></div>
+      <div class="card" style="padding:12px 16px"><div class="hist">${HISTORY.map((h,i) =>
+        `<div class="hitem${i === 0 ? " now" : ""}"><span class="hv">${esc(h.v)}</span><span class="hd">${esc(h.d)}</span>
+          <div class="hb">${esc(P(h.ko, h.en))}</div></div>`).join("")}</div></div>
+    </div>
+
+    <div class="sect">
+      <div class="maker">
+        <div class="mark">DYHAN</div>
+        <div class="role">${esc(L("maker"))}</div>
+        <div class="ver">${esc(T.appName.ko)} v1.0</div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <div class="linkrow">${svg(ICO.phone)}<span>${esc(L("install"))}</span></div>
+      <p class="src-note" style="margin-top:8px">${esc(L("installHow"))}</p>
+      <a class="linkrow" href="${REPO}" target="_blank" rel="noopener" style="color:var(--ink)">
+        ${svg(ICO.code)}<span>${esc(L("repo"))}</span><span class="ar">${svg(ICO.chev)}</span></a>
+    </div>
+
+    <div class="sect">
+      <button class="linkrow warn" type="button" id="resetBtn">${svg(ICO.trash)}<span>${esc(L("reset"))}</span></button>
+      <p class="src-note" style="margin-top:14px">${esc(L("source"))}</p>
+    </div>`;
+}
+
+/* ---------------- render ---------------- */
+function titleFor(){
+  if(st.view === "site") return `${esc(P(site().ko, site().en))}<small>${String(site().no).padStart(2,"0")}</small>`;
+  if(st.view === "list") return esc(L("list"));
+  if(st.view === "drill") return esc(L("drill"));
+  if(st.view === "me") return esc(L("me"));
+  return `${esc(T.appName[st.lang === "en" ? "en" : "ko"])}<small>DYHAN</small>`;
+}
+function render(){
+  document.getElementById("barTitle").innerHTML = titleFor();
+  document.getElementById("backBtn").hidden = st.view !== "site";
+  document.querySelectorAll("#langPill button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === st.lang));
+  const tabFor = st.view === "site" ? "list" : st.view;
+  document.querySelectorAll("#tabbar button").forEach(b => b.setAttribute("aria-current", b.dataset.view === tabFor));
+
+  const v = document.getElementById("view");
+  v.innerHTML = st.view === "list" ? vList() : st.view === "site" ? vSite()
+    : st.view === "drill" ? vDrill() : st.view === "me" ? vMe() : vMap();
+  wire();
+}
+function go(view, keepScroll){
+  st.view = view; save(); render();
+  if(!keepScroll) window.scrollTo({top:0, behavior:"instant"});
+}
+function wire(){
+  document.querySelectorAll(".pin").forEach(g => {
+    const no = +g.dataset.no;
+    const openSite = () => { st.sel = no; go("site"); };
+    g.addEventListener("click", openSite);
+    g.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openSite(); } });
+  });
+  document.querySelectorAll("[data-go]").forEach(b =>
+    b.addEventListener("click", () => { st.sel = +b.dataset.go; go("site"); }));
+  document.querySelectorAll("[data-chk]").forEach(b =>
+    b.addEventListener("click", () => {
+      const id = b.dataset.chk;
+      if(st.checks[id]) delete st.checks[id]; else st.checks[id] = true;
+      save();
+      const y = window.scrollY; render(); window.scrollTo({top:y, behavior:"instant"});
+    }));
+  const on = (id, fn) => { const el = document.getElementById(id); if(el) el.addEventListener("click", fn); };
+  on("dShow", () => { open = true; render(); });
+  on("dNext", () => { di = (di + 1) % deck.length; open = false; render(); });
+  on("dShuffle", () => { buildDeck(); render(); });
+  on("dGot", () => { const p = deck[di]; st.known[p.id] = true; save(); di = (di + 1) % deck.length; open = false; render(); });
+  on("dAgain", () => { const p = deck[di]; delete st.known[p.id]; save(); di = (di + 1) % deck.length; open = false; render(); });
+  document.querySelectorAll("#scopeSeg button").forEach(b =>
+    b.addEventListener("click", () => { st.scope = b.dataset.scope; save(); buildDeck(); render(); }));
+  on("resetBtn", () => { if(confirm(L("resetAsk"))){ st.checks = {}; st.known = {}; save(); render(); } });
+}
+
+document.querySelectorAll("#langPill button").forEach(b =>
+  b.addEventListener("click", () => { st.lang = b.dataset.lang; save(); render(); }));
+document.querySelectorAll("#tabbar button").forEach(b =>
+  b.addEventListener("click", () => { if(b.dataset.view === "drill") buildDeck(); go(b.dataset.view); }));
+document.getElementById("backBtn").addEventListener("click", () => go("list"));
+
+if(st.view === "site" && !site()) st.view = "map";
+buildDeck();
+render();
+</script>
+<script>
+/* 서비스워커 — 오프라인 실행과 홈 화면 설치를 위한 최소 등록 */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){ /* 무시: 앱은 오프라인 없이도 동작한다 */ });
+  });
+}
+</script>
+</body>
+</html>
