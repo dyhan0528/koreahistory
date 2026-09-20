@@ -1,0 +1,18 @@
+# OS
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+
+# 편집기
+.vscode/
+.idea/
+*.swp
+
+# node (빌드 도구를 쓰게 될 경우)
+node_modules/
+npm-debug.log*
+
+# 임시
+*.tmp
+*.bak
